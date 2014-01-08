@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2013-12-08 13:04:58 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping schema="warsaw_trails">
+ <class name="com.carlncarl.spdb.model.MainPoint" table="MAINPOINT">
+  <id name="id" type="java.lang.Long">
+   <column name="ID"/>
+   <generator class="increment"/>
+  </id>
+  <property generated="never" lazy="false" name="name" type="java.lang.String">
+   <column name="NAME"/>
+  </property>
+  <property generated="never" lazy="false" name="description" type="java.lang.String">
+   <column name="DESCRIPTION"/>
+  </property>
+  <property generated="never" lazy="false" name="poiReference" type="java.lang.String">
+   <column name="POIREFERENCE"/>
+  </property>
+  <property generated="never" lazy="false" name="point" type="com.vividsolutions.jts.geom.Point">
+   <column name="POINT"/>
+  </property>
+  <list lazy="true" name="rates" table="POINTRATE">
+   <key>
+    <column name="ID"/>
+   </key>
+   <list-index base="0"/>
+   <one-to-many class="com.carlncarl.spdb.model.PointRate"/>
+  </list>
+ </class>
+</hibernate-mapping>

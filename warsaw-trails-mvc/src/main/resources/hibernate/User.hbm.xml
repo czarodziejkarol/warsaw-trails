@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2013-12-08 13:04:58 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping schema="warsaw_trails">
+ <class name="com.carlncarl.spdb.model.User" table="USER">
+  <id name="id" type="java.lang.Long">
+   <column name="ID"/>
+   <generator class="increment"/>
+  </id>
+  <property generated="never" lazy="false" name="login" type="java.lang.String">
+   <column name="LOGIN" unique="true"/>
+  </property>
+  <property generated="never" lazy="false" name="password" type="java.lang.String">
+   <column name="PASSWORD"/>
+  </property>
+  <list lazy="true" name="userTrails" table="TRAIL">
+   <key>
+    <column name="ID"/>
+   </key>
+   <list-index base="0"/>
+   <one-to-many class="com.carlncarl.spdb.model.Trail"/>
+  </list>
+  <list lazy="true" name="userTrailRates" table="TRAILRATE">
+   <key>
+    <column name="ID"/>
+   </key>
+   <list-index base="0"/>
+   <one-to-many class="com.carlncarl.spdb.model.TrailRate"/>
+  </list>
+  <list lazy="true" name="userPointRates" table="POINTRATE">
+   <key>
+    <column name="ID"/>
+   </key>
+   <list-index base="0"/>
+   <one-to-many class="com.carlncarl.spdb.model.PointRate"/>
+  </list>
+ </class>
+</hibernate-mapping>

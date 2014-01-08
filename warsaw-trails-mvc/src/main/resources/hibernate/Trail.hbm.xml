@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2013-12-08 13:04:58 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping schema="warsaw_trails">
+ <class name="com.carlncarl.spdb.model.Trail" table="TRAIL">
+  <id name="id" type="java.lang.Long">
+   <column name="ID"/>
+   <generator class="increment"/>
+  </id>
+  <property generated="never" lazy="false" name="name" type="java.lang.String">
+   <column name="NAME"/>
+  </property>
+  <property generated="never" lazy="false" name="description" type="java.lang.String">
+   <column name="DESCRIPTION"/>
+  </property>
+  <many-to-one class="com.carlncarl.spdb.model.User" fetch="join" name="creator">
+   <column name="CREATOR"/>
+  </many-to-one>
+  <property generated="never" lazy="false" name="dateAdd" type="java.util.Date">
+   <column name="DATE_ADD"/>
+  </property>
+  <property generated="never" lazy="false" name="road" type="com.vividsolutions.jts.geom.LineString">
+   <column name="ROAD"/>
+  </property>
+  <list lazy="true" name="rates" table="TRAILRATE">
+   <key>
+    <column name="ID"/>
+   </key>
+   <list-index base="0"/>
+   <one-to-many class="com.carlncarl.spdb.model.TrailRate"/>
+  </list>
+  <list lazy="true" name="points" table="TRAILPOINT">
+   <key>
+    <column name="ID"/>
+   </key>
+   <list-index base="0"/>
+   <one-to-many class="com.carlncarl.spdb.model.TrailPoint"/>
+  </list>
+ </class>
+</hibernate-mapping>
