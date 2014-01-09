@@ -2,7 +2,9 @@ package com.carlncarl.spdb.android;
 
 import java.util.Locale;
 
-import com.carlncarl.spdb.android.R;
+import com.carlncarl.spdb.android.fragments.MapFragment;
+import com.carlncarl.spdb.android.tasks.ServerTask;
+
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity implements
@@ -37,11 +40,15 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
+	//	
+		
 		setContentView(R.layout.activity_main);
-
+		//new ServerTask().execute("siema");
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		// Create the adapter that will return a fragment for each of the three
@@ -107,15 +114,30 @@ public class MainActivity extends FragmentActivity implements
 	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+		
+		Fragment fragmentMap;
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
+		
+		
 
 		@Override
 		public Fragment getItem(int position) {
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
+			
+			
+			switch (position) {
+			case 0:
+				if(fragmentMap == null){
+					fragmentMap = new MapFragment();
+				}
+				return fragmentMap;
+			}
+			
+			
 			Fragment fragment = new DummySectionFragment();
 			Bundle args = new Bundle();
 			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
