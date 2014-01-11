@@ -1,18 +1,17 @@
 package com.example.warsaw_trails_spdb;
 
 
-import com.example.warsaw_trails_spdb.NaviActivity;
-import com.example.warsaw_trails_spdb.R;
-import com.example.warsaw_trails_spdb.app.Navi;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.warsaw_trails_spdb.app.Navi;
 
 public class MainActivity extends Activity {
 	EditText editText;
@@ -22,8 +21,10 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 		this.context = this;
 		editText = (EditText) (EditText) findViewById(R.id.editTextUsername);
 		editText = (EditText) (EditText) findViewById(R.id.editTextPassword);
@@ -36,6 +37,8 @@ public class MainActivity extends Activity {
 				
 			}
 		});
+		//Remove title bar
+		
 
 	}
 

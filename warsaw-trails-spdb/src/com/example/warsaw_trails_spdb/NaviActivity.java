@@ -4,6 +4,7 @@ import java.util.Locale;
 
 
 import com.example.warsaw_trails_spdb.*;
+import com.example.warsaw_trails_spdb.TrailFragment.OnFragmentInteractionListener;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -27,22 +28,22 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class NaviActivity extends Activity {
+public class NaviActivity extends Activity implements OnFragmentInteractionListener{
 	private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    private String[] mPlanetTitles;
+    private String[] mTitles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_navi);
 
         mTitle = mDrawerTitle = getTitle();
-        mPlanetTitles = getResources().getStringArray(R.array.navi_array);
+        mTitles = getResources().getStringArray(R.array.navi_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -50,7 +51,7 @@ public class NaviActivity extends Activity {
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.draver_list_item, mPlanetTitles));
+                R.layout.draver_list_item, mTitles));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
@@ -121,18 +122,31 @@ public class NaviActivity extends Activity {
     }
 
     private void selectItem(int position) {
+    	Fragment fragment = null;
+    	switch (position) {
+		case 0:
+			fragment = new PlanetFragment();
+	         Bundle args = new Bundle();
+	         args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
+	         fragment.setArguments(args);
+			break;
+		case 1:
+			fragment = new TrailFragment();
+			break;
+
+		default:
+			break;
+		}
+    	
         // update the main content by replacing fragments
-        Fragment fragment = new PlanetFragment();
-        Bundle args = new Bundle();
-        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
-        fragment.setArguments(args);
+
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
-        setTitle(mPlanetTitles[position]);
+        setTitle(mTitles[position]);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
@@ -185,4 +199,12 @@ public class NaviActivity extends Activity {
             return rootView;
         }
     }
+
+	@Override
+	public void onFragmentInteraction(String id) {
+		System.out.println(id);
+		
+		Intent intent = new Intent(this, TrailActivity.class);
+        startActivity(intent);
+	}
 }
