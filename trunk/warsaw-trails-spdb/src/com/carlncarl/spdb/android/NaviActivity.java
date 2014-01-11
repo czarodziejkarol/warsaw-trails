@@ -2,18 +2,12 @@ package com.carlncarl.spdb.android;
 
 import java.util.Locale;
 
-
-import com.carlncarl.spdb.android.*;
-import com.carlncarl.spdb.android.TrailFragment.OnFragmentInteractionListener;
-import com.example.warsaw_trails_spdb.R;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -27,7 +21,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import com.carlncarl.spdb.android.TrailFragment.OnFragmentInteractionListener;
 
 public class NaviActivity extends Activity implements OnFragmentInteractionListener{
 	private DrawerLayout mDrawerLayout;
@@ -134,7 +129,9 @@ public class NaviActivity extends Activity implements OnFragmentInteractionListe
 		case 1:
 			fragment = new TrailFragment();
 			break;
-
+		case 2:
+			fragment = new MapFragment();
+			break;
 		default:
 			break;
 		}

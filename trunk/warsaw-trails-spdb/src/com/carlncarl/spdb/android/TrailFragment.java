@@ -1,8 +1,8 @@
 package com.carlncarl.spdb.android;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +13,6 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.carlncarl.spdb.android.dummy.DummyContent;
-import com.example.warsaw_trails_spdb.R;
 
 /**
  * A fragment representing a list of Items.
