@@ -1,4 +1,4 @@
-package com.example.warsaw_trails_spdb;
+package com.carlncarl.spdb.android;
 
 
 import android.app.Activity;
@@ -11,12 +11,11 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.warsaw_trails_spdb.app.Navi;
+import com.example.warsaw_trails_spdb.R;
 
 public class MainActivity extends Activity {
 	EditText editText;
 	Button buttonLogOn;
-	Navi navi;
 	MainActivity context;
 
 	@Override
