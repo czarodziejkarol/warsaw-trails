@@ -11,8 +11,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.warsaw_trails_spdb.R;
-
 public class MainActivity extends Activity {
 	EditText editText;
 	Button buttonLogOn;

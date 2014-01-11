@@ -1,12 +1,10 @@
 package com.carlncarl.spdb.android;
 
-import com.example.warsaw_trails_spdb.R;
-
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
 
 public class TrailActivity extends Activity {
 
