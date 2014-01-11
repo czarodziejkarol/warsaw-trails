@@ -10,7 +10,7 @@
     <string-array name="navi_array">
         <item>Mapa</item>
         <item>Trasy</item>
-        <item>Coś</item>
+        <item>Dodaj trasę</item>
         <item>Tam</item>
     </string-array>
 
@@ -18,5 +18,6 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_websearch">Web search</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
+    <string name="title_activity_trail">TrailActivity</string>
 
 </resources>
