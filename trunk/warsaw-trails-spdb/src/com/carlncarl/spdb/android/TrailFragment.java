@@ -1,4 +1,4 @@
-package com.example.warsaw_trails_spdb;
+package com.carlncarl.spdb.android;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,7 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.example.warsaw_trails_spdb.dummy.DummyContent;
+import com.carlncarl.spdb.android.dummy.DummyContent;
+import com.example.warsaw_trails_spdb.R;
 
 /**
  * A fragment representing a list of Items.

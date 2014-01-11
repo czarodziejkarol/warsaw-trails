@@ -1,4 +1,6 @@
-package com.example.warsaw_trails_spdb;
+package com.carlncarl.spdb.android;
+
+import com.example.warsaw_trails_spdb.R;
 
 import android.os.Bundle;
 import android.app.Activity;

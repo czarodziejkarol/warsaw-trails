@@ -1,4 +1,4 @@
-package com.example.warsaw_trails_spdb.dummy;
+package com.carlncarl.spdb.android.dummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;

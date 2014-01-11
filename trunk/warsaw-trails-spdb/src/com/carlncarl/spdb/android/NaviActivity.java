@@ -1,10 +1,11 @@
-package com.example.warsaw_trails_spdb;
+package com.carlncarl.spdb.android;
 
 import java.util.Locale;
 
 
-import com.example.warsaw_trails_spdb.*;
-import com.example.warsaw_trails_spdb.TrailFragment.OnFragmentInteractionListener;
+import com.carlncarl.spdb.android.*;
+import com.carlncarl.spdb.android.TrailFragment.OnFragmentInteractionListener;
+import com.example.warsaw_trails_spdb.R;
 
 import android.os.Bundle;
 import android.app.Activity;
