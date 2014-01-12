@@ -1,6 +1,5 @@
 package com.carlncarl.spdb.android;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -21,21 +20,20 @@ public class MainActivity extends Activity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		this.context = this;
-		editText = (EditText) (EditText) findViewById(R.id.editTextUsername);
-		editText = (EditText) (EditText) findViewById(R.id.editTextPassword);
+		editText = (EditText) findViewById(R.id.editTextUsername);
+		editText = (EditText) findViewById(R.id.editTextPassword);
 
 		buttonLogOn = (Button) findViewById(R.id.buttonLogOn);
 		buttonLogOn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				new LoadingTask(context).execute("");
-				
+
 			}
 		});
-		//Remove title bar
-		
+		// Remove title bar
 
 	}
 
@@ -45,10 +43,10 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
-	public void startActivityNawi(){ 
+
+	public void startActivityNawi() {
 		Intent intent_name = new Intent();
-		intent_name.setClass(this.getApplicationContext(),NaviActivity.class);
+		intent_name.setClass(this.getApplicationContext(), NaviActivity.class);
 		startActivity(intent_name);
 	}
 
@@ -77,12 +75,12 @@ class LoadingTask extends AsyncTask<Object, Integer, String> {
 		//
 		// }
 		context.startActivityNawi();
-		
-//		super.onPostExecute(result);
-//
-//		context.startActivity(new Intent(context, NaviActivity.class));
-//		Intent intent = new Intent(context ,NaviActivity.class);
-//      
-//        context.startActivity(intent);
+
+		// super.onPostExecute(result);
+		//
+		// context.startActivity(new Intent(context, NaviActivity.class));
+		// Intent intent = new Intent(context ,NaviActivity.class);
+		//
+		// context.startActivity(intent);
 	}
 }

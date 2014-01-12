@@ -14,7 +14,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -47,6 +47,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="NaviActivity" />
+        </activity>
+        <activity
+            android:name="com.carlncarl.spdb.android.NewTrailActivity"
+            android:label="@string/title_activity_new_trail"
+            android:parentActivityName="com.carlncarl.spdb.android.NaviActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.carlncarl.spdb.android.NaviActivity" />
         </activity>
     </application>
 

@@ -13,11 +13,28 @@
         <item>Dodaj trasę</item>
         <item>Tam</item>
     </string-array>
+    <string-array name="trails_types_array">
+        <item>pieszy</item>
+        <item>rowerowy</item>
+        <item>kajakowy</item>
+        <item>samochodowy</item>
+    </string-array>
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_websearch">Web search</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     <string name="title_activity_trail">TrailActivity</string>
+    <string name="title_activity_new_trail">Dodawanie szlaku</string>
+    <string name="trail_name">Nazwa szlaku</string>
+    <string name="trail_description">Opis szlaku</string>
+    <string name="button_continue">Dalej</string>
+    <string name="trail_type">Typ szlaku</string>
+    <string name="new_point">Nowy punkt</string>
+    <string name="end_trail">Koniec szlaku</string>
+    <string name="add">Dodaj</string>
+    <string name="cancel">Anuluj</string>
+    <string name="point_description">Opis punktu</string>
+    <string name="point_name">Nazwa punktu</string>
 
 </resources>
