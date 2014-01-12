@@ -9,9 +9,8 @@
 
     <string-array name="navi_array">
         <item>Mapa</item>
-        <item>Trasy</item>
-        <item>Dodaj trasę</item>
-        <item>Tam</item>
+        <item>Szlaki</item>
+        <item>Dodaj szlak</item>
     </string-array>
     <string-array name="trails_types_array">
         <item>pieszy</item>
@@ -36,5 +35,7 @@
     <string name="cancel">Anuluj</string>
     <string name="point_description">Opis punktu</string>
     <string name="point_name">Nazwa punktu</string>
+    <string name="save">Zapisz</string>
+    <string name="point_list">Lista punktów</string>
 
 </resources>

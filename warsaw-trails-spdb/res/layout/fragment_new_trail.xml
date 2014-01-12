@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".NewTrailFragment" >
 
-        <EditText
+    <EditText
             android:id="@+id/edit_trail_text_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,11 +35,52 @@
             android:layout_height="wrap_content"
             android:entries="@array/trails_types_array"
             android:prompt="@string/trail_type" />
+    
+    <LinearLayout
+        android:id="@+id/lay_first_step"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+         
 
         <Button
             android:id="@+id/button_trail_continue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_continue" />
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/lay_second_step"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <Button
+            android:id="@+id/button_trail_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/point_list"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <ListView
+            android:id="@+id/list_new_points"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+
+    </LinearLayout>
+
+       
         
 </LinearLayout>

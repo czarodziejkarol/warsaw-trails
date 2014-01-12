@@ -35,4 +35,8 @@ public class Point implements Serializable{
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
+	@Override
+	public String toString() {
+		return this.getName();
+	}
 }

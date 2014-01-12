@@ -1,5 +1,11 @@
 package com.carlncarl.spdb.android;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -9,9 +15,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.carlncarl.spdb.android.dto.UserDto;
 
 public class MainActivity extends Activity {
-	EditText editText;
+	EditText editTextLogin;
+	EditText editTextPassword;
 	Button buttonLogOn;
 	MainActivity context;
 
@@ -22,14 +32,16 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		this.context = this;
-		editText = (EditText) findViewById(R.id.editTextUsername);
-		editText = (EditText) findViewById(R.id.editTextPassword);
+		editTextLogin = (EditText) findViewById(R.id.editTextUsername);
+		editTextPassword = (EditText) findViewById(R.id.editTextPassword);
 
 		buttonLogOn = (Button) findViewById(R.id.buttonLogOn);
 		buttonLogOn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				new LoadingTask(context).execute("");
+				String[] array = { editTextLogin.getText().toString(),
+						editTextPassword.getText().toString() };
+				new LoadingTask(context).execute(array);
 
 			}
 		});
@@ -52,7 +64,7 @@ public class MainActivity extends Activity {
 
 }
 
-class LoadingTask extends AsyncTask<Object, Integer, String> {
+class LoadingTask extends AsyncTask<String, Void, UserDto> {
 
 	MainActivity context;
 
@@ -62,25 +74,42 @@ class LoadingTask extends AsyncTask<Object, Integer, String> {
 	}
 
 	@Override
-	protected String doInBackground(Object... params) {
-		return null;
+	protected UserDto doInBackground(String... params) {
+		String url = "http://89.72.147.55:8080/warsaw-trails/"
+				+ "/api/register/?login={login}&password={password}";
 
+		// Create a new RestTemplate instance
+		RestTemplate restTemplate = new RestTemplate();
+
+		// Add the String message converter
+		restTemplate.getMessageConverters().add(
+				new MappingJacksonHttpMessageConverter());
+		// Make the HTTP GET request, marshaling the response to a String
+
+		// String result = restTemplate.getForObject(url, String.class,
+		// "Android");
+
+		Map<String, Object> urlVariables = new HashMap<String, Object>();
+		urlVariables.put("login", params[0]);
+		urlVariables.put("password", params[1]);
+
+		UserDto user = restTemplate.getForObject(url, UserDto.class,
+				urlVariables);
+
+		System.out.println(user);
+		return user;
 	}
 
 	@Override
-	protected void onPostExecute(String result) {
-		// if (result == null) {
-		//
-		// } else {
-		//
-		// }
+	protected void onPostExecute(UserDto result) {
+		//TODO odkomentowaæ i dzia³a :D
 		context.startActivityNawi();
+//		if (result == null) {
+//			Toast.makeText(context, "O NIE UDALO SIE", Toast.LENGTH_SHORT)
+//					.show();
+//		} else {
+//			context.startActivityNawi();
+//		}
 
-		// super.onPostExecute(result);
-		//
-		// context.startActivity(new Intent(context, NaviActivity.class));
-		// Intent intent = new Intent(context ,NaviActivity.class);
-		//
-		// context.startActivity(intent);
 	}
 }
