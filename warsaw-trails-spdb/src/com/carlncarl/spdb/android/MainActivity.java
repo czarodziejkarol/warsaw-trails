@@ -73,43 +73,53 @@ class LoadingTask extends AsyncTask<String, Void, UserDto> {
 		this.context = context;
 	}
 
-	@Override
-	protected UserDto doInBackground(String... params) {
-		String url = "http://89.72.147.55:8080/warsaw-trails/"
-				+ "/api/register/?login={login}&password={password}";
-
-		// Create a new RestTemplate instance
-		RestTemplate restTemplate = new RestTemplate();
-
-		// Add the String message converter
-		restTemplate.getMessageConverters().add(
-				new MappingJacksonHttpMessageConverter());
-		// Make the HTTP GET request, marshaling the response to a String
-
-		// String result = restTemplate.getForObject(url, String.class,
-		// "Android");
-
-		Map<String, Object> urlVariables = new HashMap<String, Object>();
-		urlVariables.put("login", params[0]);
-		urlVariables.put("password", params[1]);
-
-		UserDto user = restTemplate.getForObject(url, UserDto.class,
-				urlVariables);
-
-		System.out.println(user);
-		return user;
-	}
+//	@Override
+//	protected UserDto doInBackground(String... params) {
+//		String url = "http://89.72.147.55:8080/warsaw-trails/"
+//				+ "/api/register/?login={login}&password={password}";
+//
+//		// Create a new RestTemplate instance
+//		RestTemplate restTemplate = new RestTemplate();
+//
+//		// Add the String message converter
+//		restTemplate.getMessageConverters().add(
+//				new MappingJacksonHttpMessageConverter());
+//		// Make the HTTP GET request, marshaling the response to a String
+//
+//		
+//
+//		Map<String, Object> urlVariables = new HashMap<String, Object>();
+//		urlVariables.put("login", params[0]);
+//		urlVariables.put("password", params[1]);
+//
+//		UserDto user = restTemplate.getForObject(url, UserDto.class,
+//				urlVariables);
+//
+//		System.out.println(user);
+//		return user;
+//	}
 
 	@Override
 	protected void onPostExecute(UserDto result) {
-		//TODO odkomentowaæ i dzia³a :D
 		context.startActivityNawi();
-//		if (result == null) {
-//			Toast.makeText(context, "O NIE UDALO SIE", Toast.LENGTH_SHORT)
-//					.show();
-//		} else {
-//			context.startActivityNawi();
-//		}
+		if (result == null) {
+			Toast.makeText(context, "O NIE UDALO SIE", Toast.LENGTH_SHORT)
+					.show();
+		} else {
+			context.startActivityNawi();
+		}
 
+		// super.onPostExecute(result);
+		//
+		// context.startActivity(new Intent(context, NaviActivity.class));
+		// Intent intent = new Intent(context ,NaviActivity.class);
+		//
+		// context.startActivity(intent);
 	}
+
+@Override
+protected UserDto doInBackground(String... arg0) {
+	// TODO Auto-generated method stub
+	return new UserDto();
+}
 }
