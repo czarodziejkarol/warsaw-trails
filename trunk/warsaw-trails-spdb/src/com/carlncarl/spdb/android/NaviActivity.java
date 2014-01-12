@@ -28,6 +28,8 @@ public class NaviActivity extends Activity implements
 		OnFragmentInteractionListener {
 	public static final String SELECTED_MAIN_ITEM = "main_item_extra";
 
+	public static final int NEW_TRAIL_REQUEST = 1;
+
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -237,4 +239,7 @@ public class NaviActivity extends Activity implements
 	public int getSelectedPosition() {
 		return this.selectedPosition;
 	}
+	
+	
+
 }

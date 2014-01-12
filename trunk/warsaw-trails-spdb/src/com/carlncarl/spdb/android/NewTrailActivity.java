@@ -1,6 +1,8 @@
 package com.carlncarl.spdb.android;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -30,29 +32,34 @@ import com.google.android.gms.maps.model.PolylineOptions;
 public class NewTrailActivity extends Activity implements
 		OnMyLocationChangeListener, OnMapClickListener {
 
-	public static final String NEW_TRAIL_BUNDLE_KEY = "new_trail";
+	public static final String NEW_TRAIL_KEY = "new_trail";
 	private int position;
-	
+
 	LinearLayout newPointOrEndTrailLayout;
 	LinearLayout addPointLayout;
-	
+
 	EditText textPointName;
 	EditText textPointDesc;
-	
+
 	GoogleMap map;
 	Trail trail;
 	LinkedList<Location> locations;
+	List<MarkerOptions> markers;
 	PolylineOptions polyline;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
 		locations = new LinkedList<Location>();
+		markers = new ArrayList<MarkerOptions>();
+
 		setContentView(R.layout.activity_new_trail);
 
 		MapFragment mapFragment = (MapFragment) getFragmentManager()
 				.findFragmentById(R.id.map);
+
 		map = mapFragment.getMap();
 		setUpMap();
 
@@ -72,7 +79,7 @@ public class NewTrailActivity extends Activity implements
 				endTrail();
 			}
 		});
-		
+
 		Button buttonAddPoint = (Button) findViewById(R.id.button_add_point);
 		buttonAddPoint.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -80,18 +87,18 @@ public class NewTrailActivity extends Activity implements
 				addNewPoint();
 			}
 		});
-		
-		Button buttonCancelAdding = (Button) findViewById(R.id.button_add_point);
+
+		Button buttonCancelAdding = (Button) findViewById(R.id.button_cancel);
 		buttonCancelAdding.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				cancelAddingPoint();
 			}
 		});
-		
+
 		textPointName = (EditText) findViewById(R.id.edit_point_name);
 		textPointDesc = (EditText) findViewById(R.id.edit_point_description);
-		
+
 		newPointOrEndTrailLayout = (LinearLayout) findViewById(R.id.new_or_end_layout);
 		newPointOrEndTrailLayout.setVisibility(View.VISIBLE);
 		addPointLayout = (LinearLayout) findViewById(R.id.add_point_layout);
@@ -99,7 +106,7 @@ public class NewTrailActivity extends Activity implements
 
 		Intent intent = getIntent();
 		position = intent.getIntExtra(NaviActivity.SELECTED_MAIN_ITEM, 0);
-		trail = (Trail) intent.getSerializableExtra(NEW_TRAIL_BUNDLE_KEY);
+		trail = (Trail) intent.getSerializableExtra(NEW_TRAIL_KEY);
 
 		setupActionBar();
 	}
@@ -107,24 +114,27 @@ public class NewTrailActivity extends Activity implements
 	protected void cancelAddingPoint() {
 		newPointOrEndTrailLayout.setVisibility(View.VISIBLE);
 		addPointLayout.setVisibility(View.GONE);
+		this.textPointName.setText("");
+		this.textPointDesc.setText("");
 	}
 
 	protected void addNewPoint() {
 		Location loc = map.getMyLocation();
-		
+
 		Point point = new Point();
 		point.setName(this.textPointName.getText().toString());
-		this.textPointName.setText("");
 		point.setDescription(this.textPointDesc.getText().toString());
-		this.textPointDesc.setText("");
 		point.setLatitude(loc.getLatitude());
 		point.setLongitude(loc.getLongitude());
-		
+
 		MarkerOptions marker = new MarkerOptions();
 		marker.position(new LatLng(point.getLatitude(), point.getLongitude()));
+		marker.title(point.getName());
+		marker.visible(true);
+		marker.snippet(point.getDescription());
 		trail.getPoints().add(point);
-		map.addMarker(marker );
-		
+		map.addMarker(marker);
+		markers.add(marker);
 		cancelAddingPoint();
 	}
 
@@ -134,10 +144,18 @@ public class NewTrailActivity extends Activity implements
 	}
 
 	protected void endTrail() {
-		navigateUpTo(true);
+		Intent resultIntent = new Intent();
+		resultIntent.putExtra(NEW_TRAIL_KEY, trail);
+		setResult(Activity.RESULT_OK, resultIntent);
+		finish();
+
+		// /navigateUpTo(true);
 	}
 
 	private void setUpMap() {
+		// LocationManager manager = (LocationManager)
+		// this.getSystemService(Context.LOCATION_SERVICE);
+
 		map.setMyLocationEnabled(true);
 		LatLng latLng = new LatLng(52.2297700, 21.0117800);
 		// gMap.moveCamera(CameraUpdateFactory.newLatLng(latLng ));
@@ -177,14 +195,17 @@ public class NewTrailActivity extends Activity implements
 		Intent intent = getParentActivityIntent();
 		intent.putExtra(NaviActivity.SELECTED_MAIN_ITEM, position);
 		if (trail) {
-			intent.putExtra(NEW_TRAIL_BUNDLE_KEY, this.trail);
+			intent.putExtra(NEW_TRAIL_KEY, this.trail);
 		}
 		NavUtils.navigateUpTo(this, intent);
 	}
 
 	@Override
 	public void onMyLocationChange(Location location) {
-		if (location.getAccuracy() > 10) {
+		// for (MarkerOptions marker : markers) {
+		// map.addMarker(marker);
+		// }
+		if (location.getAccuracy() > 5) {
 			return;
 		}
 		LatLng latLng = new LatLng(location.getLatitude(),
