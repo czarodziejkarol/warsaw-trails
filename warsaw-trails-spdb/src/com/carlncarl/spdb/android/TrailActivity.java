@@ -1,6 +1,7 @@
 package com.carlncarl.spdb.android;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -8,6 +9,8 @@ import android.view.MenuItem;
 
 public class TrailActivity extends Activity {
 
+	private int position;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -15,6 +18,10 @@ public class TrailActivity extends Activity {
 		
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		Intent intent = getIntent();
+		position = intent.getIntExtra(NaviActivity.SELECTED_MAIN_ITEM, 0);
+		
 	}
 
 	/**
@@ -44,7 +51,11 @@ public class TrailActivity extends Activity {
 			//
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
 			//
-			NavUtils.navigateUpFromSameTask(this);
+			Intent intent = getParentActivityIntent();
+			intent.putExtra(NaviActivity.SELECTED_MAIN_ITEM, position);
+			NavUtils.navigateUpTo(this, intent);
+		//	NavUtils.navigateUpFromSameTask(this);
+			
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
