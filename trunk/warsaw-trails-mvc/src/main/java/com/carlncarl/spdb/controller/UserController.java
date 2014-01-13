@@ -29,17 +29,17 @@ public class UserController {
 		return userService.login(login, password);
 	}
 	
-	@RequestMapping(value="register", method=RequestMethod.POST)
+	@RequestMapping(value="register", method=RequestMethod.GET)
 	@ResponseBody
-	public AbstractDto register(String login, String password) {
+	public UserDto register(String login, String password) {
 		
-		AbstractDto retValue = new AbstractDto() ;
+		UserDto  retValue  = null; ;
 		User  u;
 		try {
 			u = userService.register(login, password);
-			UserDto uDto = UserDto.getUserFromDao(u);
-			retValue.setObject(uDto);
+			retValue = UserDto.getUserFromDao(u);
 		} catch (WarsawTrailsException e) {
+			retValue = new UserDto(null);
 			retValue.setErrorCode(e.getErrorCode());
 			retValue.setErrorDesc(e.getErrorDesc());
 		}
