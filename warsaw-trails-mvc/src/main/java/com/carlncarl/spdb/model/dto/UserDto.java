@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import com.carlncarl.spdb.model.User;
 
-public class UserDto implements Serializable {
+public class UserDto extends AbstractDto implements Serializable {
 	/**
 	 * 
 	 */
