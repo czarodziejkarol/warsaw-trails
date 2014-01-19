@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.spatial.jts.mgeom.MCoordinate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +67,7 @@ public class TrailServiceIImpl implements TrailService {
 		trail.setDateAdd(new Date());
 		trail.setDescription(trailDto.getDescription());
 		trail.setEndTime(trailDto.getEndTime());
-		trail.setName(trail.getName());
+		trail.setName(trailDto.getName());
 		trail.setStartTime(trailDto.getStartTime());
 		trail.setType(trailDto.getType());
 
@@ -104,14 +105,8 @@ public class TrailServiceIImpl implements TrailService {
 				// tworzenie nowego main pointa
 				mainPoint = new MainPoint();
 				mainPoint.setDescription(pointDto.getDescription());
-				Coordinate[] coors = new Coordinate[1];
-				coors[0] = new Coordinate(pointDto.getLatitude(),
-						pointDto.getLongitude());
 
-				CoordinateSequence pointCoordinate = CoordinateArraySequenceFactory
-						.instance().create(coors);
-				mainPoint.setPoint(new Point(pointCoordinate,
-						new GeometryFactory()));
+				mainPoint.setPoint(new MCoordinate(pointDto.getLatitude(), pointDto.getLongitude()));
 
 				mainPoint.setName(pointDto.getName());
 
