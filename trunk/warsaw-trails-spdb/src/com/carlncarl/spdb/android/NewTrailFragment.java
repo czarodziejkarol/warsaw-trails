@@ -1,8 +1,11 @@
 package com.carlncarl.spdb.android;
 
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+
 import android.app.Fragment;
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,15 +16,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.carlncarl.spdb.android.dto.Point;
-import com.carlncarl.spdb.android.dto.Trail;
-import com.carlncarl.spdb.android.dummy.DummyContent;
-import com.carlncarl.spdb.android.dummy.DummyContent.DummyItem;
+import com.carlncarl.spdb.android.dto.PointDto;
+import com.carlncarl.spdb.android.dto.TrailDto;
 
 public class NewTrailFragment extends Fragment {
 
@@ -32,7 +32,8 @@ public class NewTrailFragment extends Fragment {
 	LinearLayout layFirst;
 	LinearLayout laySecond;
 	Button buttonContinue;
-	Trail trail;
+	TrailDto trail;
+	private NaviActivity parentActivity;
 
 	public NewTrailFragment() {
 	}
@@ -44,6 +45,8 @@ public class NewTrailFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_new_trail, container,
 				false);
 
+		parentActivity = (NaviActivity) getActivity();
+		
 		spinner = (Spinner) view.findViewById(R.id.spinner_type);
 		// Create an ArrayAdapter using the string array and a default spinner
 		// layout
@@ -89,8 +92,8 @@ public class NewTrailFragment extends Fragment {
 	}
 
 	protected void submitForm() {
-		Trail trail = new Trail(editTextName.getText().toString(), editTextDesc
-				.getText().toString(), (String) spinner.getSelectedItem());
+		TrailDto trail = new TrailDto(editTextName.getText().toString(), editTextDesc
+				.getText().toString(), (String) spinner.getSelectedItem(), parentActivity.getUser());
 		Intent intent = new Intent(getActivity(), NewTrailActivity.class);
 
 		intent.putExtra(NaviActivity.SELECTED_MAIN_ITEM,
@@ -108,37 +111,51 @@ public class NewTrailFragment extends Fragment {
 				layFirst.setVisibility(View.GONE);
 				laySecond.setVisibility(View.VISIBLE);
 				
-				trail = (Trail) data
+				trail = (TrailDto) data
 						.getSerializableExtra(NewTrailActivity.NEW_TRAIL_KEY);
-				new NewTrailTask().execute(trail);
+				
 				editTextName.setText(trail.getName());
 				editTextDesc.setText(trail.getDescription());
 				
-				ArrayAdapter<Point> mAdapter = new ArrayAdapter<Point>(getActivity(),
+				ArrayAdapter<PointDto> mAdapter = new ArrayAdapter<PointDto>(getActivity(),
 						android.R.layout.simple_list_item_1, android.R.id.text1,
 						trail.getPoints());
 				
 				listNewPoints.setAdapter(mAdapter);
-				//wyœwietlenie danych
-				
-				
-				
 			}
 		}
 	}
 
-	private class NewTrailTask extends AsyncTask<Trail, Integer, Trail> {
+	private class NewTrailTask extends AsyncTask<TrailDto, Integer, TrailDto> {
 
 		@Override
-		protected Trail doInBackground(Trail... arg0) {
-			Trail trail = arg0[0];
+		protected TrailDto doInBackground(TrailDto... arg0) {
 			
-			
-			return trail;
+			TrailDto trail = arg0[0];
+			String url = Constants.SERVER_PATH + "api/add-trail/";
+
+			// Create a new RestTemplate instance
+			RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+			//new RestTemplate(org.springframework.http.client.support.HttpRequestWrapper)
+			// Add the String message converter
+			restTemplate.getMessageConverters().add(
+					new MappingJacksonHttpMessageConverter());
+			// Make the HTTP GET request, marshalin	g the response to a String
+
+			// String result = restTemplate.getForObject(url, String.class,
+			// "Android");
+			//System.setProperty("http.keepAlive", "false");
+			TrailDto trailDto = null;
+			try{
+				trailDto = restTemplate.postForObject(url, trail, TrailDto.class);
+			} catch(Exception e){
+				System.err.println(e.getMessage() + e.getStackTrace().toString());
+			}
+			return trailDto;
 		}
 
 		@Override
-		protected void onPostExecute(Trail result) {
+		protected void onPostExecute(TrailDto result) {
 			super.onPostExecute(result);
 
 			if (result != null) {

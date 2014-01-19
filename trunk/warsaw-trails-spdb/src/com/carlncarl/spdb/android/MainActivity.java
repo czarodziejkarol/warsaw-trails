@@ -7,9 +7,13 @@ import org.springframework.http.converter.json.MappingJacksonHttpMessageConverte
 import org.springframework.web.client.RestTemplate;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
@@ -18,12 +22,56 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.carlncarl.spdb.android.dto.UserDto;
+import com.carlncarl.spdb.android.service.TrailsService;
 
 public class MainActivity extends Activity {
+
+	public static final String USER_EXTRA = "user_dto_extra";
+
 	EditText editTextLogin;
 	EditText editTextPassword;
 	Button buttonLogOn;
 	MainActivity context;
+
+	private TrailsService mTrailsService;
+
+	private ServiceConnection connection = new ServiceConnection() {
+
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			mTrailsService = null;
+		}
+
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			mTrailsService = ((TrailsService.TrailBinder) service).getService();
+			mIsBound = true;
+		}
+	};
+	private boolean mIsBound;
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		bindService(new Intent(this, TrailsService.class), connection,
+				Context.BIND_AUTO_CREATE);
+		Intent intent = new Intent(this, TrailsService.class);
+
+		startService(intent);
+	}
+
+	void doUnbindService() {
+		if (mIsBound) {
+			unbindService(connection);
+			mIsBound = false;
+		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		doUnbindService();
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,21 +93,24 @@ public class MainActivity extends Activity {
 
 			}
 		});
-		// Remove title bar
 
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 
-	public void startActivityNawi() {
-		Intent intent_name = new Intent();
-		intent_name.setClass(this.getApplicationContext(), NaviActivity.class);
-		startActivity(intent_name);
+	public void startActivityNawi(UserDto result) {
+		if (mIsBound) {
+			mTrailsService.setUser(result);
+			Intent intent_name = new Intent();
+			intent_name.setClass(this.getApplicationContext(),
+					NaviActivity.class);
+			intent_name.putExtra(USER_EXTRA, result);
+			startActivity(intent_name);
+		}
 	}
 
 }
@@ -73,53 +124,35 @@ class LoadingTask extends AsyncTask<String, Void, UserDto> {
 		this.context = context;
 	}
 
-//	@Override
-//	protected UserDto doInBackground(String... params) {
-//		String url = "http://89.72.147.55:8080/warsaw-trails/"
-//				+ "/api/register/?login={login}&password={password}";
-//
-//		// Create a new RestTemplate instance
-//		RestTemplate restTemplate = new RestTemplate();
-//
-//		// Add the String message converter
-//		restTemplate.getMessageConverters().add(
-//				new MappingJacksonHttpMessageConverter());
-//		// Make the HTTP GET request, marshaling the response to a String
-//
-//		
-//
-//		Map<String, Object> urlVariables = new HashMap<String, Object>();
-//		urlVariables.put("login", params[0]);
-//		urlVariables.put("password", params[1]);
-//
-//		UserDto user = restTemplate.getForObject(url, UserDto.class,
-//				urlVariables);
-//
-//		System.out.println(user);
-//		return user;
-//	}
+	@Override
+	protected UserDto doInBackground(String... params) {
+
+		String url = Constants.SERVER_PATH
+				+ "api/register/?login={login}&password={password}";
+
+		RestTemplate restTemplate = new RestTemplate();
+
+		restTemplate.getMessageConverters().add(
+				new MappingJacksonHttpMessageConverter());
+
+		Map<String, Object> urlVariables = new HashMap<String, Object>();
+		urlVariables.put("login", params[0]);
+		urlVariables.put("password", params[1]);
+
+		UserDto user = restTemplate.getForObject(url, UserDto.class,
+				urlVariables);
+
+		return user;
+	}
 
 	@Override
 	protected void onPostExecute(UserDto result) {
-		context.startActivityNawi();
 		if (result == null) {
 			Toast.makeText(context, "O NIE UDALO SIE", Toast.LENGTH_SHORT)
 					.show();
 		} else {
-			context.startActivityNawi();
+			context.startActivityNawi(result);
 		}
 
-		// super.onPostExecute(result);
-		//
-		// context.startActivity(new Intent(context, NaviActivity.class));
-		// Intent intent = new Intent(context ,NaviActivity.class);
-		//
-		// context.startActivity(intent);
 	}
-
-@Override
-protected UserDto doInBackground(String... arg0) {
-	// TODO Auto-generated method stub
-	return new UserDto();
-}
 }
