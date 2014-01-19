@@ -20,7 +20,8 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public User getUserByLoginAndPassword(String login, String password) {
 		Session session = sessionFactory.openSession();
-		Query query = session.createQuery(
+		Query query = session
+				.createQuery(
 						"from User where login = :login and password = :password")
 				.setString("login", login).setString("password", password);
 		User user = (User) query.uniqueResult();
@@ -30,7 +31,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	@Transactional
-	public User save(User user) throws WarsawTrailsException{
+	public User save(User user) throws WarsawTrailsException {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		session.save(user);
@@ -38,9 +39,10 @@ public class UserDaoImpl implements UserDao {
 			session.getTransaction().commit();
 		} catch (ConstraintViolationException e) {
 			session.getTransaction().rollback();
-			throw new WarsawTrailsException(WarsawTrailsException.ERROR_EXISTING_USER, null);
+			throw new WarsawTrailsException(
+					WarsawTrailsException.ERROR_EXISTING_USER, null);
 		}
-		
+
 		session.close();
 		return user;
 	}
@@ -59,6 +61,29 @@ public class UserDaoImpl implements UserDao {
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
+	}
+
+	@Transactional
+	public User getUserById(Long id) {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		User user = (User) session.get(User.class, id);
+
+		session.getTransaction().commit();
+		session.close();
+		return user;
+
+	}
+
+	@Override
+	public User update(User user) {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		session.update(user);
+
+		session.getTransaction().commit();
+		session.close();
+		return user;
 	}
 
 }

@@ -1,10 +1,6 @@
 package com.carlncarl.spdb.model.dto;
 
 import java.io.Serializable;
-import java.util.List;
-
-import com.carlncarl.spdb.model.PointRate;
-import com.vividsolutions.jts.geom.Point;
 
 public class MainPointDto implements Serializable {
 
@@ -21,9 +17,13 @@ public class MainPointDto implements Serializable {
 
 	private String poiReference; // https://developers.google.com/places/documentation/details
 
-	private Point point;
+	private CoordinateDto coordinate;
 	
 	private Double rate;
+	
+	public MainPointDto() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public Long getId() {
 		return id;
@@ -57,20 +57,20 @@ public class MainPointDto implements Serializable {
 		this.description = description;
 	}
 
-	public Point getPoint() {
-		return point;
-	}
-
-	public void setPoint(Point point) {
-		this.point = point;
-	}
-
 	public Double getRate() {
 		return rate;
 	}
 
 	public void setRate(Double rate) {
 		this.rate = rate;
+	}
+
+	public CoordinateDto getCoordinate() {
+		return coordinate;
+	}
+
+	public void setCoordinate(CoordinateDto coordinate) {
+		this.coordinate = coordinate;
 	}
 
 }

@@ -8,45 +8,45 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.carlncarl.spdb.exception.WarsawTrailsException;
 import com.carlncarl.spdb.model.User;
-import com.carlncarl.spdb.model.dto.AbstractDto;
 import com.carlncarl.spdb.model.dto.UserDto;
 import com.carlncarl.spdb.service.UserService;
 
 @Controller
 @RequestMapping("api")
 public class UserController {
-	
+
 	UserService userService;
-	
+
 	@Autowired
-	public  UserController(UserService userService){
+	public UserController(UserService userService) {
 		this.userService = userService;
 	}
-	
-	@RequestMapping(value="login", method=RequestMethod.POST)
+
+	@RequestMapping(value = "login", method = RequestMethod.GET)
 	@ResponseBody
 	public User login(String login, String password) {
 		return userService.login(login, password);
 	}
-	
-	@RequestMapping(value="register", method=RequestMethod.GET)
+
+	@RequestMapping(value = "register", method = RequestMethod.GET)
 	@ResponseBody
 	public UserDto register(String login, String password) {
-		
-		UserDto  retValue  = null; ;
-		User  u;
+
+		UserDto retValue = null;
+
+		User u = null;
 		try {
 			u = userService.register(login, password);
-			retValue = UserDto.getUserFromDao(u);
+
 		} catch (WarsawTrailsException e) {
-			retValue = new UserDto(null);
-			retValue.setErrorCode(e.getErrorCode());
-			retValue.setErrorDesc(e.getErrorDesc());
+			u = userService.login(login, password);
 		}
+
+		if (u != null) {
+			retValue = UserDto.getUserFromDao(u);
+		}
+
 		return retValue;
 	}
-	
-	
-	
-	
+
 }

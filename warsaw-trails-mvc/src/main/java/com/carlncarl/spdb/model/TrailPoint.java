@@ -1,6 +1,7 @@
 package com.carlncarl.spdb.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class TrailPoint implements Serializable{
 
@@ -16,6 +17,10 @@ public class TrailPoint implements Serializable{
 	private Trail trail;
 	
 	private MainPoint point;
+	
+	private Date startTime;
+	
+	private Date endTime;
 
 	public Long getId() {
 		return id;
@@ -47,5 +52,21 @@ public class TrailPoint implements Serializable{
 
 	public void setPoint(MainPoint point) {
 		this.point = point;
+	}
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
 	}
 }
