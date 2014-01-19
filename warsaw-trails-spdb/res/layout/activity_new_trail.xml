@@ -75,6 +75,20 @@
                 android:hint="@string/point_description"
                 android:inputType="textPostalAddress" />
 
+            <EditText
+                android:id="@+id/edit_description_trail_point"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/trail_desc_opint"
+                android:ems="10"
+                android:inputType="textMultiLine" />
+
+            <ListView
+                android:id="@+id/list_points_existing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </ListView>
+
         </LinearLayout>
 
         <fragment 
