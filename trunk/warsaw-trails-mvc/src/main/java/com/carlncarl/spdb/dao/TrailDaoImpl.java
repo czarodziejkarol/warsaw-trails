@@ -39,16 +39,21 @@ public class TrailDaoImpl implements TrailDao {
 	}
 
 	@Override
-	public List<Trail> getTrailsByDateAdd() {
+	public List<TrailDto> getTrailsByDateAdd() {
 		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
 		Query query = session
 				.createQuery("select t from Trail t order by t.dateAdd DESC");
 		List<Trail> trails = query.list();
-
+		
+		List<TrailDto> trailsDto = new ArrayList<TrailDto>();
+		for (Trail trail : trails) {
+			trailsDto.add(Mapper.toSimpleTrail(trail));
+		}
+		
 		session.getTransaction().commit();
 		session.close();
-		return trails;
+		return trailsDto;
 	}
 
 	@Override

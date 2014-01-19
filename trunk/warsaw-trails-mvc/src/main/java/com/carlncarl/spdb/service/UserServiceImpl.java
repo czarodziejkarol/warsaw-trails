@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import com.carlncarl.spdb.dao.UserDao;
 import com.carlncarl.spdb.exception.WarsawTrailsException;
 import com.carlncarl.spdb.model.User;
+import com.carlncarl.spdb.model.dto.PointRateDto;
+import com.carlncarl.spdb.model.dto.TrailRateDto;
+import com.carlncarl.spdb.model.dto.UserDto;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -14,18 +17,30 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 	
 	@Override
-	public User login(String login, String password) {
-		User user = userDao.getUserByLoginAndPassword(login, password);
+	public UserDto login(String login, String password) {
+		UserDto user = userDao.getUserByLoginAndPassword(login, password);
 		return user;
 	}
 	
 	@Override
-	public User register(String login, String password) throws WarsawTrailsException {
+	public UserDto register(String login, String password) throws WarsawTrailsException {
 		User user = new User();
 		user.setLogin(login);	
 		user.setPassword(password);
-		user = userDao.save(user);
-		return user;
+		UserDto dto  = userDao.save(user);
+		return dto;
+	}
+
+	@Override
+	public String voteTrail(TrailRateDto rate) {
+		// TODO Auto-generated method stub
+		return userDao.voteTrail(rate);
+	}
+
+	@Override
+	public String votePoint(PointRateDto rate) {
+		// TODO Auto-generated method stub
+		return userDao.votePoint(rate);
 	}
 	
 
