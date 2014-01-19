@@ -36,5 +36,6 @@
     <string name="point_name">Nazwa punktu</string>
     <string name="save">Zapisz</string>
     <string name="point_list">Lista punktów</string>
+    <string name="trail_desc_opint">Opis punktu w kontekście szlaku</string>
 
 </resources>
