@@ -87,10 +87,12 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User update(User user) {
+	public User update(User user, Trail trail) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		session.update(user);
+		User u = (User) session.get(User.class, user.getId());
+		u.getUserTrails().add(trail);
+		session.update(u);
 
 		session.getTransaction().commit();
 		session.close();
