@@ -53,8 +53,8 @@ public class Mapper {
 		dto.setEndTime(point.getEndTime());
 		dto.setStartTime(point.getStartTime());
 		dto.setId(point.getId());
-		dto.setLatitude(point.getPoint().getPoint().getX());
-		dto.setLongitude(point.getPoint().getPoint().getY());
+		dto.setLatitude(point.getPoint().getPoint().x);
+		dto.setLongitude(point.getPoint().getPoint().y);
 		
 		dto.setPointDescription(point.getPoint().getDescription());
 		dto.setPoiRef(point.getPoint().getPoiReference());
@@ -75,7 +75,7 @@ public class Mapper {
 		MainPointDto dto = new MainPointDto();
 		dto.setId(model.getId());
 		dto.setDescription(model.getDescription());
-		dto.setCoordinate(Mapper.toCoordinateDto(model.getPoint().getCoordinate()));
+		dto.setCoordinate(Mapper.toCoordinateDto(model.getPoint()));
 		dto.setName(model.getName());
 		dto.setPoiReference(model.getPoiReference());
 		return dto;

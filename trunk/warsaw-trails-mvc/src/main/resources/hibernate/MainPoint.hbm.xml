@@ -17,7 +17,7 @@
   <property generated="never" lazy="false" name="poiReference" type="java.lang.String">
    <column name="POIREFERENCE"/>
   </property>
-  <property generated="never" lazy="false" name="point" type="com.vividsolutions.jts.geom.Point">
+  <property generated="never" lazy="false" name="point" type="org.hibernate.spatial.jts.mgeom.MCoordinate">
    <column name="POINT"/>
   </property>
   <list lazy="true" name="rates" table="POINTRATE">

@@ -3,7 +3,8 @@ package com.carlncarl.spdb.model;
 import java.io.Serializable;
 import java.util.List;
 
-import com.vividsolutions.jts.geom.Point;
+import org.hibernate.spatial.jts.mgeom.MCoordinate;
+
 
 public class MainPoint implements Serializable{
 
@@ -20,7 +21,7 @@ public class MainPoint implements Serializable{
 	
 	private String poiReference; //https://developers.google.com/places/documentation/details
 	
-	private Point point;
+	private MCoordinate point;
 	
 	private List<PointRate> rates;
 	
@@ -56,11 +57,11 @@ public class MainPoint implements Serializable{
 		this.description = description;
 	}
 
-	public Point getPoint() {
+	public MCoordinate getPoint() {
 		return point;
 	}
 
-	public void setPoint(Point point) {
+	public void setPoint(MCoordinate point) {
 		this.point = point;
 	}
 

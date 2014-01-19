@@ -4,6 +4,8 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.carlncarl.spdb.exception.WarsawTrailsException;
 import com.carlncarl.spdb.model.dto.CoordinateDto;
+import com.carlncarl.spdb.model.dto.MainPointDto;
 import com.carlncarl.spdb.model.dto.PointDto;
 import com.carlncarl.spdb.model.dto.TrailDto;
 import com.carlncarl.spdb.model.dto.UserDto;
@@ -22,10 +25,9 @@ public class TrailsServiceTest {
 
 	@Autowired
 	TrailService trailService;
-	
-	
+
 	UserServiceImpl usersService;
-	
+
 	@Test
 	public void testGetTrailsByDate() {
 		fail("Not yet implemented");
@@ -33,15 +35,28 @@ public class TrailsServiceTest {
 
 	@Test
 	public void testGetTrailsByRate() {
+		RestTemplate restTemplate = new RestTemplate();
+		String url = "http://89.72.147.55:8080/warsaw-trails/api/near-points?latitude={latitude}&longitude={longitude}"
+				+ "&distance={distance}";
+		Map<String, Object> urlVariables = new HashMap<String, Object>();
+		urlVariables.put("latitude", "52.2109945");//52.2109945,21.0024228
+		urlVariables.put("longitude", "21.0024228");
+		urlVariables.put("distance", "100");
+		
+		restTemplate.getMessageConverters().add(
+				new MappingJacksonHttpMessageConverter());
+
+		MainPointDto[] list = restTemplate.getForObject(url,
+				MainPointDto[].class, urlVariables);
 		fail("Not yet implemented");
 	}
 
 	@Test
 	public void testSave() throws WarsawTrailsException {
-	//	usersService = new UserServiceImpl();
-	//	User uM = usersService.register("cardasdwles", "dupa");
+		// usersService = new UserServiceImpl();
+		// User uM = usersService.register("cardasdwles", "dupa");
 		UserDto u = new UserDto(new Long(1), "carles");
-		
+
 		TrailDto t = new TrailDto();
 		t.setCreator(u);
 		t.setDescription("piêkny szlak kêdzie¿awy");
@@ -56,9 +71,8 @@ public class TrailsServiceTest {
 		path.add(new CoordinateDto(22.06, 23.25));
 		path.add(new CoordinateDto(22.07, 23.26));
 		path.add(new CoordinateDto(22.08, 23.27));
-		t.setPath(path );
-		
-		
+		t.setPath(path);
+
 		ArrayList<PointDto> points = new ArrayList<PointDto>();
 		PointDto p = new PointDto();
 		p.setDescription("wata wata");
@@ -69,10 +83,10 @@ public class TrailsServiceTest {
 		p.setName("Punkt michigan");
 		p.setStartTime(new Date());
 		points.add(p);
-		
+
 		p = new PointDto();
 		p.setDescription("wata wa21312ta");
-		//p.setPoiRef("21312416fgvdahbanawbfiabibach4tba");
+		// p.setPoiRef("21312416fgvdahbanawbfiabibach4tba");
 		p.setEndTime(new Date());
 		p.setLatitude(22.06);
 		p.setPointDescription("Extra siomekdwdwad wad aw awa exksta musisz to zobaczyc");
@@ -81,10 +95,10 @@ public class TrailsServiceTest {
 		p.setName("Punkt michigan");
 		p.setStartTime(new Date());
 		points.add(p);
-		
+
 		p = new PointDto();
 		p.setDescription("wata wa21312ta");
-	//	p.setMainPointId(new Long(2131));
+		// p.setMainPointId(new Long(2131));
 		p.setEndTime(new Date());
 		p.setPointDescription("Extra s dawd awdaw dawaw iomek exksta musisz to zobaczyc");
 
@@ -93,47 +107,45 @@ public class TrailsServiceTest {
 		p.setName("Punkt michigandawdaw");
 		p.setStartTime(new Date());
 		points.add(p);
-		
-		t.setPoints(points );
-		
+
+		t.setPoints(points);
+
 		t.setStartTime(new Date());
 		t.setType("pieszy");
-		
+
 		String url = "http://89.72.147.55:8080/warsaw-trails/api/add-trail/";
 
 		// Create a new RestTemplate instance
 		RestTemplate restTemplate = new RestTemplate();
-		//new RestTemplate(org.springframework.http.client.support.HttpRequestWrapper)
+		// new
+		// RestTemplate(org.springframework.http.client.support.HttpRequestWrapper)
 		// Add the String message converter
 		restTemplate.getMessageConverters().add(
 				new MappingJacksonHttpMessageConverter());
-		// Make the HTTP GET request, marshalin	g the response to a String
+		// Make the HTTP GET request, marshalin g the response to a String
 
 		// String result = restTemplate.getForObject(url, String.class,
 		// "Android");
-		//System.setProperty("http.keepAlive", "false");
+		// System.setProperty("http.keepAlive", "false");
 		TrailDto trailDto = null;
-		try{
-			trailDto = restTemplate.postForObject(url, t, TrailDto.class);
-		} catch(Exception e){
+		try {
+			// trailDto = restTemplate.postForObject(url, t, TrailDto.class);
+		} catch (Exception e) {
 			System.err.println(e.getMessage() + e.getStackTrace().toString());
 		}
-		
-		
-		
-//		String url = "http://89.72.147.55:8080/warsaw-trails/api/add-trail";
-//		RestTemplate temp = new RestTemplate();
-//		
-//		
-//		temp.getMessageConverters().add(
-//				new MappingJacksonHttpMessageConverter());
-//		
-//		TrailDto das = temp.postForObject(url, t, TrailDto.class);
-//		
-//
-//		assertNotNull( das.getId());;
-		
-		
+
+		// String url = "http://89.72.147.55:8080/warsaw-trails/api/add-trail";
+		// RestTemplate temp = new RestTemplate();
+		//
+		//
+		// temp.getMessageConverters().add(
+		// new MappingJacksonHttpMessageConverter());
+		//
+		// TrailDto das = temp.postForObject(url, t, TrailDto.class);
+		//
+		//
+		// assertNotNull( das.getId());;
+
 		fail("Not yet implemented");
 	}
 
