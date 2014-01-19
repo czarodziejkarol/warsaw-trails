@@ -2,12 +2,14 @@ package com.carlncarl.spdb.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.carlncarl.spdb.exception.WarsawTrailsException;
-import com.carlncarl.spdb.model.User;
+import com.carlncarl.spdb.model.dto.PointRateDto;
+import com.carlncarl.spdb.model.dto.TrailRateDto;
 import com.carlncarl.spdb.model.dto.UserDto;
 import com.carlncarl.spdb.service.UserService;
 
@@ -22,19 +24,12 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@RequestMapping(value = "login", method = RequestMethod.GET)
-	@ResponseBody
-	public User login(String login, String password) {
-		return userService.login(login, password);
-	}
-
 	@RequestMapping(value = "register", method = RequestMethod.GET)
 	@ResponseBody
 	public UserDto register(String login, String password) {
 
-		UserDto retValue = null;
 
-		User u = null;
+		UserDto u = null;
 		try {
 			u = userService.register(login, password);
 
@@ -42,11 +37,20 @@ public class UserController {
 			u = userService.login(login, password);
 		}
 
-		if (u != null) {
-			retValue = UserDto.getUserFromDao(u);
-		}
-
-		return retValue;
+		return u;
+	}
+	
+	@RequestMapping(value = "vote-trail", method = RequestMethod.POST)
+	@ResponseBody
+	public String voteTrail(@RequestBody TrailRateDto rate){
+		String result = userService.voteTrail(rate);
+		return result;
 	}
 
+	@RequestMapping(value = "vote-point", method = RequestMethod.POST)
+	@ResponseBody
+	public String voteTrail(@RequestBody PointRateDto rate){
+		String result = userService.votePoint(rate);
+		return result;
+	}
 }

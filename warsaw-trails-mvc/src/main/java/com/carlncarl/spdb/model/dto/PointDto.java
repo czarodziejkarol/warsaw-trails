@@ -2,6 +2,7 @@ package com.carlncarl.spdb.model.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class PointDto implements Serializable{
 
@@ -17,6 +18,8 @@ public class PointDto implements Serializable{
 	private double latitude;
 	private Date startTime;
 	private Date endTime;
+	private Double rate;
+	private List<PointRateDto> pointRates;
 	
 	public PointDto(){
 		this.startTime = new Date();
@@ -93,6 +96,22 @@ public class PointDto implements Serializable{
 
 	public void setPointDescription(String pointDescription) {
 		this.pointDescription = pointDescription;
+	}
+
+	public List<PointRateDto> getPointRates() {
+		return pointRates;
+	}
+
+	public void setPointRates(List<PointRateDto> pointRates) {
+		this.pointRates = pointRates;
+	}
+
+	public Double getRate() {
+		return rate;
+	}
+
+	public void setRate(Double rate) {
+		this.rate = rate;
 	}
 
 }

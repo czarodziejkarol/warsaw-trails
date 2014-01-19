@@ -3,6 +3,7 @@ package com.carlncarl.spdb.model.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class TrailDto implements Serializable {
 
@@ -17,6 +18,8 @@ public class TrailDto implements Serializable {
 	private ArrayList<CoordinateDto> path;
 	private ArrayList<PointDto> points;
 	private UserDto creator;
+	private Double rate;
+	private List<TrailRateDto> trailRates;
 
 	public TrailDto(){
 		
@@ -103,5 +106,21 @@ public class TrailDto implements Serializable {
 
 	public void setCreator(UserDto creator) {
 		this.creator = creator;
+	}
+
+	public List<TrailRateDto> getTrailRates() {
+		return trailRates;
+	}
+
+	public void setTrailRates(List<TrailRateDto> trailRates) {
+		this.trailRates = trailRates;
+	}
+
+	public Double getRate() {
+		return rate;
+	}
+
+	public void setRate(Double rate) {
+		this.rate = rate;
 	}
 }

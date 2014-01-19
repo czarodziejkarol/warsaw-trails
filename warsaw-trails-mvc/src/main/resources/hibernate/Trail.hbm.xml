@@ -35,7 +35,7 @@
   <property generated="never" lazy="false" name="road" type="com.vividsolutions.jts.geom.LineString">
    <column name="ROAD"/>
   </property>
-  <list lazy="true" name="rates" table="TRAILRATE">
+  <list lazy="true" name="rates" cascade="all" table="TRAILRATE">
    <key>
     <column name="TRAIL"/>
    </key>

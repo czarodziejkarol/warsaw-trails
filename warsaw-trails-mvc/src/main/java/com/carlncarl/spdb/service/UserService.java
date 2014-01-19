@@ -1,10 +1,14 @@
 package com.carlncarl.spdb.service;
 
 import com.carlncarl.spdb.exception.WarsawTrailsException;
-import com.carlncarl.spdb.model.User;
+import com.carlncarl.spdb.model.dto.PointRateDto;
+import com.carlncarl.spdb.model.dto.TrailRateDto;
+import com.carlncarl.spdb.model.dto.UserDto;
 
 public interface UserService {
 
-	public User login(String login, String password);
-	public User register(String login, String password) throws WarsawTrailsException;
+	public UserDto login(String login, String password);
+	public UserDto register(String login, String password) throws WarsawTrailsException;
+	public String voteTrail(TrailRateDto rate);
+	public String votePoint(PointRateDto rate);
 }

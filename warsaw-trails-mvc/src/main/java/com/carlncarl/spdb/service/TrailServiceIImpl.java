@@ -41,14 +41,10 @@ public class TrailServiceIImpl implements TrailService {
 
 	@Override
 	public List<TrailDto> getTrailsByDate() {
-		List<Trail> trails = trailDao.getTrailsByDateAdd();
+		List<TrailDto> trails = trailDao.getTrailsByDateAdd();
 		
-		List<TrailDto> trailsDto = new ArrayList<TrailDto>();
-		for (Trail trail : trails) {
-			trailsDto.add(Mapper.toSimpleTrail(trail));
-		}
-		
-		return trailsDto;
+
+		return trails;
 	}
 
 	@Override
@@ -96,8 +92,7 @@ public class TrailServiceIImpl implements TrailService {
 			
 			MainPoint mainPoint = null;
 			if (pointDto.getPoiRef() != null) {
-				// TODO mainPoint =
-				// pointDao.getMainPointByPoi(pointDto.getPoiRef());
+				mainPoint = pointDao.getMainPointByPoi(pointDto.getPoiRef());
 			} else if (pointDto.getMainPointId() != null) {
 				mainPoint = pointDao
 						.getMainPointById(pointDto.getMainPointId());
@@ -105,7 +100,7 @@ public class TrailServiceIImpl implements TrailService {
 				// tworzenie nowego main pointa
 				mainPoint = new MainPoint();
 				mainPoint.setDescription(pointDto.getDescription());
-
+				mainPoint.setPoiReference(pointDto.getPoiRef());
 				mainPoint.setPoint(new MCoordinate(pointDto.getLatitude(), pointDto.getLongitude()));
 
 				mainPoint.setName(pointDto.getName());

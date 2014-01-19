@@ -9,7 +9,14 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.carlncarl.spdb.exception.WarsawTrailsException;
+import com.carlncarl.spdb.model.MainPoint;
+import com.carlncarl.spdb.model.PointRate;
+import com.carlncarl.spdb.model.Trail;
+import com.carlncarl.spdb.model.TrailRate;
 import com.carlncarl.spdb.model.User;
+import com.carlncarl.spdb.model.dto.PointRateDto;
+import com.carlncarl.spdb.model.dto.TrailRateDto;
+import com.carlncarl.spdb.model.dto.UserDto;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -18,23 +25,27 @@ public class UserDaoImpl implements UserDao {
 	private SessionFactory sessionFactory;
 
 	@Override
-	public User getUserByLoginAndPassword(String login, String password) {
+	public UserDto getUserByLoginAndPassword(String login, String password) {
+		UserDto dto = null;
 		Session session = sessionFactory.openSession();
 		Query query = session
 				.createQuery(
 						"from User where login = :login and password = :password")
 				.setString("login", login).setString("password", password);
 		User user = (User) query.uniqueResult();
+		dto = Mapper.toUserDto(user);
 		session.close();
-		return user;
+		return dto;
 	}
 
 	@Override
 	@Transactional
-	public User save(User user) throws WarsawTrailsException {
+	public UserDto save(User user) throws WarsawTrailsException {
+		UserDto dto = null;
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		session.save(user);
+		dto = Mapper.getUserFromDao(user);
 		try {
 			session.getTransaction().commit();
 		} catch (ConstraintViolationException e) {
@@ -44,7 +55,7 @@ public class UserDaoImpl implements UserDao {
 		}
 
 		session.close();
-		return user;
+		return dto;
 	}
 
 	@Override
@@ -84,6 +95,46 @@ public class UserDaoImpl implements UserDao {
 		session.getTransaction().commit();
 		session.close();
 		return user;
+	}
+
+	@Override
+	public String voteTrail(TrailRateDto rate) {
+		String status = "OK";
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		User user = (User) session.load(User.class, rate.getUserId());
+		Trail trail = (Trail) session.get(Trail.class, rate.getTrailId());
+		TrailRate dRate = new TrailRate();
+		dRate.setUser(user);
+		dRate.setTrail(trail);
+		dRate.setRate(rate.getRate());
+		dRate.setComment(rate.getComment());
+		trail.getRates().add(dRate);
+		session.update(trail);
+		session.getTransaction().commit();
+		session.close();
+		return status;
+	}
+
+	@Override
+	public String votePoint(PointRateDto rate) {
+		String status = "OK";
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		User user = (User) session.load(User.class, rate.getUserId());
+		MainPoint point = (MainPoint) session.get(MainPoint.class,
+				rate.getMainPointId());
+		PointRate dRate = new PointRate();
+		dRate.setUser(user);
+		dRate.setPoint(point);
+		dRate.setRate(rate.getRate());
+		dRate.setComment(rate.getComment());
+		point.getRates().add(dRate);
+		
+		session.update(point);
+		session.getTransaction().commit();
+		session.close();
+		return status;
 	}
 
 }
