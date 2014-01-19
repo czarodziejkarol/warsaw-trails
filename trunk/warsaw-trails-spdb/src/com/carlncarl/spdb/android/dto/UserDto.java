@@ -1,7 +1,7 @@
 package com.carlncarl.spdb.android.dto;
 
 import java.io.Serializable;
-
+import java.util.List;
 
 public class UserDto implements Serializable {
 	/**
@@ -12,6 +12,10 @@ public class UserDto implements Serializable {
 	private Long id;
 
 	private String login;
+	
+	private List<TrailRateDto> trailRates;
+	
+	private List<PointRateDto> pointRates;
 	
 	public UserDto(){
 		
@@ -40,5 +44,21 @@ public class UserDto implements Serializable {
 
 	public void setLogin(String login) {
 		this.login = login;
+	}
+
+	public List<TrailRateDto> getTrailRates() {
+		return trailRates;
+	}
+
+	public void setTrailRates(List<TrailRateDto> trailRates) {
+		this.trailRates = trailRates;
+	}
+
+	public List<PointRateDto> getPointRates() {
+		return pointRates;
+	}
+
+	public void setPointRates(List<PointRateDto> pointRates) {
+		this.pointRates = pointRates;
 	}
 }
