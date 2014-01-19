@@ -8,7 +8,6 @@
     <string name="title_activity_navi">NaviActivity</string>
 
     <string-array name="navi_array">
-        <item>Mapa</item>
         <item>Szlaki</item>
         <item>Dodaj szlak</item>
     </string-array>

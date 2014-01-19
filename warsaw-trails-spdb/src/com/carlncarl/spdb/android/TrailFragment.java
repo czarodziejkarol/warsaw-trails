@@ -1,7 +1,15 @@
 package com.carlncarl.spdb.android;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+
 import android.app.Activity;
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,56 +20,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.carlncarl.spdb.android.dummy.DummyContent;
+import com.carlncarl.spdb.android.dto.TrailDto;
 
-/**
- * A fragment representing a list of Items.
- * <p />
- * Large screen devices (such as tablets) are supported by replacing the
- * ListView with a GridView.
- * <p />
- * Activities containing this fragment MUST implement the {@link Callbacks}
- * interface.
- */
 public class TrailFragment extends Fragment implements
 		AbsListView.OnItemClickListener {
 
-	// TODO: Rename parameter arguments, choose names that match
-	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "param1";
-	private static final String ARG_PARAM2 = "param2";
-
-	// TODO: Rename and change types of parameters
-	private String mParam1;
-	private String mParam2;
-
 	private OnFragmentInteractionListener mListener;
 
-	/**
-	 * The fragment's ListView/GridView.
-	 */
+
 	private AbsListView mListView;
 
-	/**
-	 * The Adapter which will be used to populate the ListView/GridView with
-	 * Views.
-	 */
 	private ListAdapter mAdapter;
 
-	// TODO: Rename and change types of parameters
-	public static TrailFragment newInstance(String param1, String param2) {
-		TrailFragment fragment = new TrailFragment();
-		Bundle args = new Bundle();
-		args.putString(ARG_PARAM1, param1);
-		args.putString(ARG_PARAM2, param2);
-		fragment.setArguments(args);
-		return fragment;
-	}
-
-	/**
-	 * Mandatory empty constructor for the fragment manager to instantiate the
-	 * fragment (e.g. upon screen orientation changes).
-	 */
 	public TrailFragment() {
 	}
 
@@ -69,15 +39,9 @@ public class TrailFragment extends Fragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (getArguments() != null) {
-			mParam1 = getArguments().getString(ARG_PARAM1);
-			mParam2 = getArguments().getString(ARG_PARAM2);
-		}
-
-		// TODO: Change Adapter to display your content
-		mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-				android.R.layout.simple_list_item_1, android.R.id.text1,
-				DummyContent.ITEMS);
+		this.trails = new ArrayList<TrailDto>();
+		mAdapter = new ArrayAdapter<TrailDto>(getActivity(),
+				android.R.layout.simple_list_item_1, android.R.id.text1, trails);
 	}
 
 	@Override
@@ -85,13 +49,16 @@ public class TrailFragment extends Fragment implements
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_trail, container, false);
 
-		// Set the adapter
+		
+		
 		mListView = (AbsListView) view.findViewById(android.R.id.list);
 		((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
-		// Set OnItemClickListener so we can be notified on item clicks
+		
 		mListView.setOnItemClickListener(this);
 
+		new LoadTrailsTask().execute("");
+		
 		return view;
 	}
 
@@ -116,10 +83,8 @@ public class TrailFragment extends Fragment implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		if (null != mListener) {
-			// Notify the active callbacks interface (the activity, if the
-			// fragment is attached to one) that an item has been selected.
-			mListener
-					.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+			mListener.onFragmentInteraction(trails.get(position).getId()
+					.toString());
 		}
 	}
 
@@ -136,18 +101,46 @@ public class TrailFragment extends Fragment implements
 		}
 	}
 
-	/**
-	 * This interface must be implemented by activities that contain this
-	 * fragment to allow an interaction in this fragment to be communicated to
-	 * the activity and potentially other fragments contained in that activity.
-	 * <p>
-	 * See the Android Training lesson <a href=
-	 * "http://developer.android.com/training/basics/fragments/communicating.html"
-	 * >Communicating with Other Fragments</a> for more information.
-	 */
 	public interface OnFragmentInteractionListener {
-		// TODO: Update argument type and name
 		public void onFragmentInteraction(String id);
 	}
 
+	private class LoadTrailsTask extends AsyncTask<String, Integer, TrailDto[]> {
+
+		@Override
+		protected TrailDto[] doInBackground(String... arg0) {
+
+			String url = Constants.SERVER_PATH + "api/new-trails/";
+
+			RestTemplate restTemplate = new RestTemplate(
+					new HttpComponentsClientHttpRequestFactory());
+			
+			restTemplate.getMessageConverters().add(
+					new MappingJacksonHttpMessageConverter());
+
+			TrailDto[] list = restTemplate.getForObject(url, TrailDto[].class);
+			return list;
+		}
+
+		@Override
+		protected void onPostExecute(TrailDto[] result) {
+			super.onPostExecute(result);
+
+			if (result != null) {
+				showLastTrails(result);
+			}
+
+		}
+	}
+
+	List<TrailDto> trails;
+
+	public void showLastTrails(TrailDto[] result) {
+
+		for (TrailDto trailDto : result) {
+			trails.add(trailDto);
+		}
+		((ArrayAdapter)mAdapter).notifyDataSetChanged();
+
+	}
 }

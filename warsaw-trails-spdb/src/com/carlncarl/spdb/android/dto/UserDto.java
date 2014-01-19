@@ -2,7 +2,8 @@ package com.carlncarl.spdb.android.dto;
 
 import java.io.Serializable;
 
-public class UserDto extends AbstractDto implements Serializable {
+
+public class UserDto implements Serializable {
 	/**
 	 * 
 	 */
@@ -12,6 +13,19 @@ public class UserDto extends AbstractDto implements Serializable {
 
 	private String login;
 	
+	public UserDto(){
+		
+	}
+	
+	public UserDto(Long id, String login){
+		this.id = id;
+		this.login = login;
+	}
+
+	public UserDto(String login) {
+		this.login = login;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -27,5 +41,4 @@ public class UserDto extends AbstractDto implements Serializable {
 	public void setLogin(String login) {
 		this.login = login;
 	}
-	
 }

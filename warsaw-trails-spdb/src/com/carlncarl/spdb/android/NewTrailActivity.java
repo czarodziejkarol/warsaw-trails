@@ -1,6 +1,7 @@
 package com.carlncarl.spdb.android;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,8 +19,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.carlncarl.spdb.android.dto.Point;
-import com.carlncarl.spdb.android.dto.Trail;
+import com.carlncarl.spdb.android.dto.CoordinateDto;
+import com.carlncarl.spdb.android.dto.PointDto;
+import com.carlncarl.spdb.android.dto.TrailDto;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -42,10 +44,11 @@ public class NewTrailActivity extends Activity implements
 	EditText textPointDesc;
 
 	GoogleMap map;
-	Trail trail;
+	TrailDto trail;
 	LinkedList<Location> locations;
 	List<MarkerOptions> markers;
 	PolylineOptions polyline;
+	private PointDto currentPoint;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +109,7 @@ public class NewTrailActivity extends Activity implements
 
 		Intent intent = getIntent();
 		position = intent.getIntExtra(NaviActivity.SELECTED_MAIN_ITEM, 0);
-		trail = (Trail) intent.getSerializableExtra(NEW_TRAIL_KEY);
+		trail = (TrailDto) intent.getSerializableExtra(NEW_TRAIL_KEY);
 
 		setupActionBar();
 	}
@@ -114,6 +117,7 @@ public class NewTrailActivity extends Activity implements
 	protected void cancelAddingPoint() {
 		newPointOrEndTrailLayout.setVisibility(View.VISIBLE);
 		addPointLayout.setVisibility(View.GONE);
+		currentPoint = null;
 		this.textPointName.setText("");
 		this.textPointDesc.setText("");
 	}
@@ -121,7 +125,7 @@ public class NewTrailActivity extends Activity implements
 	protected void addNewPoint() {
 		Location loc = map.getMyLocation();
 
-		Point point = new Point();
+		PointDto point = currentPoint;
 		point.setName(this.textPointName.getText().toString());
 		point.setDescription(this.textPointDesc.getText().toString());
 		point.setLatitude(loc.getLatitude());
@@ -135,15 +139,21 @@ public class NewTrailActivity extends Activity implements
 		trail.getPoints().add(point);
 		map.addMarker(marker);
 		markers.add(marker);
+		
 		cancelAddingPoint();
+		
+		
 	}
 
 	protected void showAddPointLayout() {
 		newPointOrEndTrailLayout.setVisibility(View.GONE);
 		addPointLayout.setVisibility(View.VISIBLE);
+		this.currentPoint = new PointDto();
 	}
 
 	protected void endTrail() {
+		this.trail.setEndTime(new Date());
+		
 		Intent resultIntent = new Intent();
 		resultIntent.putExtra(NEW_TRAIL_KEY, trail);
 		setResult(Activity.RESULT_OK, resultIntent);
@@ -202,9 +212,6 @@ public class NewTrailActivity extends Activity implements
 
 	@Override
 	public void onMyLocationChange(Location location) {
-		// for (MarkerOptions marker : markers) {
-		// map.addMarker(marker);
-		// }
 		if (location.getAccuracy() > 5) {
 			return;
 		}
@@ -213,14 +220,25 @@ public class NewTrailActivity extends Activity implements
 		if (polyline == null) {
 			polyline = new PolylineOptions();
 			polyline.color(Color.GREEN);
+			//dodanie poprzednich punktów
+			if(trail != null && trail.getPath().size() > 0){
+				for (CoordinateDto coordinate : trail.getPath()) {
+					polyline.add(new LatLng(coordinate.getLatitude(), coordinate.getLongitude()));
+				}
+			}
+			
+			
 			map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 21));
 		} else {
 			map.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 		}
 
+		
 		polyline.add(latLng);
 
 		map.addPolyline(polyline);
+		
+		this.trail.getPath().add(new CoordinateDto(location.getLatitude(), location.getLongitude()));
 
 		locations.add(location);
 
