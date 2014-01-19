@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import com.carlncarl.spdb.model.User;
 
-public class UserDto extends AbstractDto implements Serializable {
+public class UserDto implements Serializable {
 	/**
 	 * 
 	 */
@@ -13,6 +13,10 @@ public class UserDto extends AbstractDto implements Serializable {
 	private Long id;
 
 	private String login;
+	
+	public UserDto(){
+		
+	}
 	
 	public UserDto(Long id, String login){
 		this.id = id;

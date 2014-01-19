@@ -22,7 +22,7 @@
   </property>
   <list lazy="true" name="rates" table="POINTRATE">
    <key>
-    <column name="ID"/>
+    <column name="POINT"/>
    </key>
    <list-index base="0"/>
    <one-to-many class="com.carlncarl.spdb.model.PointRate"/>

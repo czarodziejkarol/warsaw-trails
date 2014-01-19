@@ -24,6 +24,12 @@ public class Trail implements Serializable{
 	
 	private LineString road;
 	
+	private String type;
+	
+	private Date startTime;
+	
+	private Date endTime;
+	
 	private List<TrailRate> rates;
 	
 	private List<TrailPoint> points;
@@ -90,5 +96,29 @@ public class Trail implements Serializable{
 
 	public void setDateAdd(Date dateAdd) {
 		this.dateAdd = dateAdd;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

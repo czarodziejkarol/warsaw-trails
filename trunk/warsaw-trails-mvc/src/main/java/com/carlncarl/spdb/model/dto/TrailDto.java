@@ -1,38 +1,36 @@
 package com.carlncarl.spdb.model.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import com.carlncarl.spdb.model.User;
-import com.vividsolutions.jts.geom.LineString;
-
-public class TrailDto implements Serializable{
+public class TrailDto implements Serializable {
 
 	private static final long serialVersionUID = -5671157372358596748L;
-	
-private Long id;
-	
+
+	private Long id;
 	private String name;
-	
 	private String description;
-	
-	private User creator;
-	
-	private Date dateAdd;
-	
-	private LineString road;
-	
-	private Double rate;
-	
-	private List<TrailPointDto> points;
+	private String type;
+	private Date startTime;
+	private Date endTime;
+	private ArrayList<CoordinateDto> path;
+	private ArrayList<PointDto> points;
+	private UserDto creator;
 
-	public Long getId() {
-		return id;
+	public TrailDto(){
+		
 	}
-
-	public void setId(Long id) {
-		this.id = id;
+	
+	public TrailDto(String name, String description, String type, UserDto creator) {
+		id = null;
+		this.name = name;
+		this.description = description;
+		this.type = type;
+		this.points = new ArrayList<PointDto>();
+		this.path = new ArrayList<CoordinateDto>();
+		this.creator = creator;
+		startTime = new Date();
 	}
 
 	public String getName() {
@@ -51,44 +49,59 @@ private Long id;
 		this.description = description;
 	}
 
-	public User getCreator() {
-		return creator;
+	public String getType() {
+		return type;
 	}
 
-	public void setCreator(User creator) {
-		this.creator = creator;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public LineString getRoad() {
-		return road;
-	}
-
-	public void setRoad(LineString road) {
-		this.road = road;
-	}
-
-	public List<TrailPointDto> getPoints() {
+	public ArrayList<PointDto> getPoints() {
 		return points;
 	}
 
-	public void setPoints(List<TrailPointDto> points) {
+	public void setPoints(ArrayList<PointDto> points) {
 		this.points = points;
 	}
 
-	public Date getDateAdd() {
-		return dateAdd;
+	public Date getStartTime() {
+		return startTime;
 	}
 
-	public void setDateAdd(Date dateAdd) {
-		this.dateAdd = dateAdd;
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
 	}
 
-	public Double getRate() {
-		return rate;
+	public Date getEndTime() {
+		return endTime;
 	}
 
-	public void setRate(Double rate) {
-		this.rate = rate;
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
 	}
 
+	public ArrayList<CoordinateDto> getPath() {
+		return path;
+	}
+
+	public void setPath(ArrayList<CoordinateDto> path) {
+		this.path = path;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public UserDto getCreator() {
+		return creator;
+	}
+
+	public void setCreator(UserDto creator) {
+		this.creator = creator;
+	}
 }
