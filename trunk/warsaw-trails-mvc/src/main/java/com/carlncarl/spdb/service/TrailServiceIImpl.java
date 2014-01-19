@@ -114,14 +114,14 @@ public class TrailServiceIImpl implements TrailService {
 
 		trail.setPoints(points);
 		
-		List<Trail> userTrails = new ArrayList<Trail>();
-		userTrails.add(trail);
-//		u.getUserTrails().add(trail);
-		u.setUserTrails(userTrails );
+//		List<Trail> userTrails = new ArrayList<Trail>();
+//		userTrails.add(trail);
+
+//		u.setUserTrails(userTrails );
 
 		//trail = trailDao.save(trail);
 	//	userDao.save(u);
-		userDao.update(u);
+		userDao.update(u, trail);
 		
 		trailDto.setId(trail.getId());
 
