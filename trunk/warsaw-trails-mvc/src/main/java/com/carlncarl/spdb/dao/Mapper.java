@@ -66,7 +66,9 @@ public class Mapper {
 
 	private static PointDto toPointDto(TrailPoint point) {
 		PointDto dto = new PointDto();
+		dto.setName(point.getPoint().getName());
 		dto.setDescription(point.getDescription());
+		dto.setPointDescription(point.getPoint().getDescription());
 		dto.setEndTime(point.getEndTime());
 		dto.setStartTime(point.getStartTime());
 		dto.setId(point.getId());
