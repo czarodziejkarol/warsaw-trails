@@ -56,11 +56,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.carlncarl.spdb.android.NaviActivity" />
         </activity>
+
         <service
             android:name="com.carlncarl.spdb.android.service.TrailsService"
             android:enabled="true"
             android:exported="false" >
         </service>
+
+        <activity
+            android:name="com.carlncarl.spdb.android.TrailMapActivity"
+            android:label="@string/title_activity_trail_map"
+            android:parentActivityName="com.carlncarl.spdb.android.TrailActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.carlncarl.spdb.android.TrailActivity" />
+        </activity>
     </application>
 
 </manifest>

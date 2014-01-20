@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 
+import com.carlncarl.spdb.android.dto.TrailDto;
 import com.carlncarl.spdb.android.dto.UserDto;
 
 public class TrailsService extends Service {
@@ -13,6 +14,8 @@ public class TrailsService extends Service {
 	private final IBinder mBinder = new TrailBinder();
 
 	private static UserDto user;
+	
+	private static TrailDto currentTrail;;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -31,6 +34,14 @@ public class TrailsService extends Service {
 
 	public UserDto getUser() {
 		return user;
+	}
+
+	public TrailDto getCurrentTrail() {
+		return currentTrail;
+	}
+
+	public void setCurrentTrail(TrailDto currentTrail) {
+		TrailsService.currentTrail = currentTrail;
 	}
 
 }

@@ -1,0 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TrailMapActivity" >
+
+       <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+           <LinearLayout
+               android:id="@+id/point_rate_lay"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical" >
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:gravity="center" >
+
+                   <RatingBar
+                       android:id="@+id/point_rate"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:max="@integer/max_rate" />
+
+                   <Button
+                       android:id="@+id/button_rate_point"
+                       style="?android:attr/buttonStyleSmall"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="@string/rate" />
+               </LinearLayout>
+
+               <EditText
+                   android:id="@+id/edit_text_comment"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:ems="10"
+                   android:hint="@string/add_comment"
+                   android:inputType="textMultiLine" />
+
+           </LinearLayout>
+
+        <fragment 
+          android:id="@+id/map"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:name="com.google.android.gms.maps.MapFragment"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
