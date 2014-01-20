@@ -115,6 +115,8 @@ public class NewTrailActivity extends Activity implements
 			}
 		});
 
+		
+
 		textPointName = (EditText) findViewById(R.id.edit_point_name);
 		textPointDesc = (EditText) findViewById(R.id.edit_point_description);
 		textPointTrailDesc = (EditText) findViewById(R.id.edit_description_trail_point);

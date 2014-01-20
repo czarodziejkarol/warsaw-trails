@@ -37,5 +37,9 @@
     <string name="save">Zapisz</string>
     <string name="point_list">Lista punktów</string>
     <string name="trail_desc_opint">Opis punktu w kontekście szlaku</string>
+    <string name="title_activity_trail_map">Nawigacja szlaku</string>
+    <string name="rate">Oceń!</string>
+    <string name="add_comment">Dodaj komentarz</string>
+    <string name="follow_trail">Podążaj szlakiem</string>
 
 </resources>
