@@ -25,7 +25,7 @@
 			name="trail">
 			<column name="TRAIL" />
 		</many-to-one>
-		<many-to-one cascade="all" class="com.carlncarl.spdb.model.MainPoint"
+		<many-to-one cascade="save-update" class="com.carlncarl.spdb.model.MainPoint"
 			fetch="join" name="point">
 			<column name="POINT" />
 		</many-to-one>

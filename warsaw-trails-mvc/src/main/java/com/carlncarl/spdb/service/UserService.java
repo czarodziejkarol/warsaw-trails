@@ -9,6 +9,6 @@ public interface UserService {
 
 	public UserDto login(String login, String password);
 	public UserDto register(String login, String password) throws WarsawTrailsException;
-	public String voteTrail(TrailRateDto rate);
-	public String votePoint(PointRateDto rate);
+	public TrailRateDto voteTrail(TrailRateDto rate);
+	public PointRateDto votePoint(PointRateDto rate);
 }

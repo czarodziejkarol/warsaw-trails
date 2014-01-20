@@ -42,15 +42,15 @@ public class UserController {
 	
 	@RequestMapping(value = "vote-trail", method = RequestMethod.POST)
 	@ResponseBody
-	public String voteTrail(@RequestBody TrailRateDto rate){
-		String result = userService.voteTrail(rate);
+	public TrailRateDto voteTrail(@RequestBody TrailRateDto rate){
+		TrailRateDto result = userService.voteTrail(rate);
 		return result;
 	}
 
 	@RequestMapping(value = "vote-point", method = RequestMethod.POST)
 	@ResponseBody
-	public String voteTrail(@RequestBody PointRateDto rate){
-		String result = userService.votePoint(rate);
+	public PointRateDto voteTrail(@RequestBody PointRateDto rate){
+		PointRateDto result = userService.votePoint(rate);
 		return result;
 	}
 }
