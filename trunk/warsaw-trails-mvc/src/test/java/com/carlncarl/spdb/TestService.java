@@ -6,17 +6,12 @@ package com.carlncarl.spdb;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Test;
 import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import com.carlncarl.spdb.model.dto.PointRateDto;
 import com.carlncarl.spdb.model.dto.TrailRateDto;
-import com.carlncarl.spdb.model.dto.UserDto;
 
 /**
  * @author Karol
@@ -46,6 +41,8 @@ public class TestService {
 		String status = restTemplate.postForObject(url, tVote, String.class);
 		
 		assertNotNull(status);
+		
+		
 		url = "http://89.72.147.55:8080/warsaw-trails/"
 				+ "/api/vote-point";
 		PointRateDto pVote = new PointRateDto();

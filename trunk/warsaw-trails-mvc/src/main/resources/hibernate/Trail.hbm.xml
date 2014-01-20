@@ -35,14 +35,14 @@
   <property generated="never" lazy="false" name="road" type="com.vividsolutions.jts.geom.LineString">
    <column name="ROAD"/>
   </property>
-  <list lazy="true" name="rates" cascade="all" table="TRAILRATE">
+  <list lazy="true" name="rates" cascade="save-update" table="TRAILRATE">
    <key>
     <column name="TRAIL"/>
    </key>
    <list-index base="0"/>
    <one-to-many class="com.carlncarl.spdb.model.TrailRate"/>
   </list>
-  <list lazy="true" name="points" cascade="all" table="TRAILPOINT">
+  <list lazy="true" name="points" cascade="save-update" table="TRAILPOINT">
    <key>
     <column name="TRAIL"/>
    </key>

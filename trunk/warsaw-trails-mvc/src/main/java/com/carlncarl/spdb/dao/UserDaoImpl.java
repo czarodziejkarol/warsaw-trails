@@ -100,8 +100,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public String voteTrail(TrailRateDto rate) {
-		String status = "OK";
+	public TrailRateDto voteTrail(TrailRateDto rate) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		User user = (User) session.load(User.class, rate.getUserId());
@@ -115,12 +114,12 @@ public class UserDaoImpl implements UserDao {
 		session.update(trail);
 		session.getTransaction().commit();
 		session.close();
-		return status;
+		rate.setId(dRate.getId());
+		return rate;
 	}
 
 	@Override
-	public String votePoint(PointRateDto rate) {
-		String status = "OK";
+	public PointRateDto votePoint(PointRateDto rate) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		User user = (User) session.load(User.class, rate.getUserId());
@@ -136,7 +135,8 @@ public class UserDaoImpl implements UserDao {
 		session.update(point);
 		session.getTransaction().commit();
 		session.close();
-		return status;
+		rate.setId(dRate.getId());
+		return rate;
 	}
 
 }

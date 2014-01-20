@@ -14,7 +14,7 @@ public interface UserDao {
 	public User update(User user, Trail trail);
 	public boolean delete(User user);
 	public User getUserById(Long id);
-	public String voteTrail(TrailRateDto rate);
-	public String votePoint(PointRateDto rate);
+	public TrailRateDto voteTrail(TrailRateDto rate);
+	public PointRateDto votePoint(PointRateDto rate);
 	
 }

@@ -32,13 +32,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String voteTrail(TrailRateDto rate) {
+	public TrailRateDto voteTrail(TrailRateDto rate) {
 		// TODO Auto-generated method stub
 		return userDao.voteTrail(rate);
 	}
 
 	@Override
-	public String votePoint(PointRateDto rate) {
+	public PointRateDto votePoint(PointRateDto rate) {
 		// TODO Auto-generated method stub
 		return userDao.votePoint(rate);
 	}
