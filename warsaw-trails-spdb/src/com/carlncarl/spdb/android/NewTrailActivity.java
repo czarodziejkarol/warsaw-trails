@@ -305,8 +305,17 @@ public class NewTrailActivity extends Activity implements
 			
 			MainPointDto[] list = restTemplate.getForObject(url, MainPointDto[].class,urlVariables);
 			
-			//TODO dodanie places api
-			//PLACESY
+			PlacesService service = new PlacesService(
+					"AIzaSyDDQmSFM5YGLpvBFitj1TZwpH9AvPHzhbg");
+			String places;
+			ArrayList<Place> findPlaces = service.findPlaces(28.632808, // 28.632808
+					77.218276, ""); // 77.218276
+
+			for (int i = 0; i < findPlaces.size(); i++) {
+
+				Place placeDetail = findPlaces.get(i);
+				//Log.e(TAG, "places : " + placeDetail.getName());
+			}
 			
 			//przerobienie na        MainPointDto tudu = new MainPointDto();
 			//dutu.setName
