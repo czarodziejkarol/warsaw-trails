@@ -6,108 +6,185 @@
     android:orientation="vertical"
     tools:context=".TrailActivity" >
 
-    <LinearLayout
-        android:id="@+id/trail_desc_load"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="visible" >
-
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <TextView
-            android:id="@+id/Loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ładowanie..."
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/trail_desc_list"
+    <ScrollView
+        android:id="@+id/scrollView1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top|center"
-        android:orientation="vertical"
-        android:visibility="gone" >
-
-        <TextView
-            android:id="@+id/trail_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/trail_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <Button
-            android:id="@+id/button_go"
-            style="@style/ButtonText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_green"
-            android:text="@string/follow_trail" />
-
-        <ListView
-            android:id="@+id/trail_coments_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </ListView>
-
-        <ListView
-            android:id="@+id/trail_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </ListView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/trail_rate_lay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top|center"
-        android:orientation="vertical"
-        android:visibility="gone" >
+        android:layout_height="wrap_content" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center" >
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
-            <RatingBar
-                android:id="@+id/trail_rate"
+            <LinearLayout
+                android:id="@+id/trail_desc_load"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:max="@integer/max_rate"
-                android:stepSize="1" />
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="visible" >
 
-            <Button
-                android:id="@+id/button_rate_trail"
-                style="@style/ButtonText"
-                android:layout_width="wrap_content"
+                <ProgressBar
+                    android:id="@+id/progressBar1"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:id="@+id/Loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ładowanie..."
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/trail_desc_list"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_green"
-                android:text="@string/rate" />
+                android:gravity="top|center"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <Button
+                    android:id="@+id/button_go"
+                    style="@style/ButtonText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_green"
+                    android:text="@string/follow_trail" />
+
+                <TextView
+                    android:id="@+id/trail_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="dawdawdaw"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/trail_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="description"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="2" >
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_row="2"
+                        android:text="@string/type" />
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="left|top"
+                        android:layout_row="3"
+                        android:text="@string/time" />
+
+                    <TextView
+                        android:id="@+id/text_type_trail"
+                        android:layout_column="1"
+                        android:layout_gravity="left|top"
+                        android:layout_row="2"
+                        android:text="TextView" />
+
+                    <TextView
+                        android:id="@+id/text_time"
+                        android:layout_column="1"
+                        android:layout_gravity="left|top"
+                        android:layout_row="3"
+                        android:text="TextView" />
+
+                </GridLayout>
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/plist" />
+
+                <ListView
+                    android:id="@+id/trail_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" >
+                </ListView>
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/comments" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rate" />
+
+                <LinearLayout
+                    android:id="@+id/trail_rate_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top|center"
+                    android:orientation="vertical"
+                    android:visibility="visible" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center" >
+
+                        <RatingBar
+                            android:id="@+id/trail_rate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:max="@integer/max_rate"
+                            android:stepSize="1" />
+
+                        <Button
+                            android:id="@+id/button_rate_trail"
+                            style="@style/ButtonText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/btn_green"
+                            android:text="@string/rate" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/edit_text_trailcomment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/add_comment"
+                        android:inputType="textMultiLine" >
+
+                        <requestFocus />
+                    </EditText>
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/trail_coments_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" >
+                </ListView>
+
+            </LinearLayout>
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/edit_text_trailcomment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/add_comment"
-            android:inputType="textMultiLine" >
-        </EditText>
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

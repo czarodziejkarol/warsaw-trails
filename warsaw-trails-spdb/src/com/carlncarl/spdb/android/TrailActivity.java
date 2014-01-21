@@ -45,6 +45,9 @@ public class TrailActivity extends Activity {
 	private TextView trailName;
 	private TextView trailDesc;
 	private TextView trailComent;
+	
+	private TextView trailType;
+	private TextView trailTime;
 	private ListView trailList;
 	private ListView trailComentsList;
 	private RatingBar trailRating;
@@ -99,6 +102,10 @@ public class TrailActivity extends Activity {
 		trailName = (TextView) findViewById(R.id.trail_name);
 		trailDesc = (TextView) findViewById(R.id.trail_desc);
 		trailComent = (TextView) findViewById(R.id.edit_text_trailcomment);
+		
+		trailType = (TextView) findViewById(R.id.text_type_trail);
+		trailTime = (TextView) findViewById(R.id.text_time);
+		
 		trailRating = (RatingBar) findViewById(R.id.trail_rate);
 		trailList = (ListView) findViewById(R.id.trail_list);
 		trailComentsList = (ListView) findViewById(R.id.trail_coments_list);
@@ -226,7 +233,8 @@ public class TrailActivity extends Activity {
 
 		trailName.setText(trail.getName());
 		trailDesc.setText(trail.getDescription());
-
+		trailType.setText(trail.getType());
+		trailTime.setText((trail.getEndTime().getTime() - trail.getStartTime().getTime())/(1000*60) +" minut");
 		ArrayAdapter<PointDto> mAdapter = new ArrayAdapter<PointDto>(this,
 				android.R.layout.simple_list_item_1, android.R.id.text1,
 				trail.getPoints());

@@ -158,9 +158,11 @@ public class NewTrailActivity extends Activity implements
 		PointDto point = currentPoint;
 		point.setName(this.textPointName.getText().toString());
 		point.setDescription(this.textPointDesc.getText().toString());
+		point.setPointDescription(this.textPointTrailDesc.getText().toString());
 		point.setLatitude(loc.getLatitude());
 		point.setLongitude(loc.getLongitude());
-
+		point.setEndTime(new Date());
+		
 		MarkerOptions marker = new MarkerOptions();
 		marker.position(new LatLng(point.getLatitude(), point.getLongitude()));
 		marker.title(point.getName());
@@ -267,7 +269,7 @@ public class NewTrailActivity extends Activity implements
 	@Override
 	public void onMyLocationChange(Location location) {
 		
-		if (location.getAccuracy() > 5) {
+		if (location.getAccuracy() > 10) {
 			if(locations.size() == 0){
 				locations.add(location);
 			}

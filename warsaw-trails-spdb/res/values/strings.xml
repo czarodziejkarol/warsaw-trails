@@ -44,5 +44,10 @@
     <string name="login">Login</string>
     <string name="password">Hasło</string>
     <string name="logon">Logowanie</string>
+    <string name="comments">Komentarze</string>
+    <string name="points_list">Litapunktów na trasie:</string>
+    <string name="plist">Lista punktów na szlaku:</string>
+    <string name="type">Typ szlaku:</string>
+    <string name="time">Czas przebycia szlaku:</string>
 
 </resources>
