@@ -1,11 +1,13 @@
 package com.carlncarl.spdb.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.spatial.jts.mgeom.MCoordinate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,12 +15,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.carlncarl.spdb.exception.WarsawTrailsException;
 import com.carlncarl.spdb.model.MainPoint;
 import com.carlncarl.spdb.model.Trail;
+import com.carlncarl.spdb.model.TrailPoint;
+import com.carlncarl.spdb.model.User;
+import com.carlncarl.spdb.model.dto.CoordinateDto;
 import com.carlncarl.spdb.model.dto.MainPointDto;
+import com.carlncarl.spdb.model.dto.PointDto;
 import com.carlncarl.spdb.model.dto.TrailDto;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
 
 @Repository
@@ -29,13 +35,75 @@ public class TrailDaoImpl implements TrailDao {
 
 	@Override
 	@Transactional
-	public Trail save(Trail trail) throws WarsawTrailsException {
+	public TrailDto save(TrailDto trailDto) throws WarsawTrailsException {
 		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
-		Long trailId = (Long) session.save(trail);
+		
+		
+		Trail trail = new Trail();
+		User u = (User) session.get(User.class, trailDto.getCreator().getId());
+		trail.setCreator(u);
+		trail.setDateAdd(new Date());
+		trail.setDescription(trailDto.getDescription());
+		trail.setEndTime(trailDto.getEndTime());
+		trail.setName(trailDto.getName());
+		trail.setStartTime(trailDto.getStartTime());
+		trail.setType(trailDto.getType());
+
+		Coordinate[] coordinates = new Coordinate[trailDto.getPath().size()];
+		for (int i = 0; i < trailDto.getPath().size(); i++) {
+			CoordinateDto cDto = trailDto.getPath().get(i);
+			coordinates[i] = new Coordinate(cDto.getLatitude(),
+					cDto.getLongitude());
+		}
+
+		CoordinateSequence roadPoints = CoordinateArraySequenceFactory
+				.instance().create(coordinates);
+		LineString road = new LineString(roadPoints, new GeometryFactory());
+		trail.setRoad(road);
+
+		List<TrailPoint> points = new ArrayList<TrailPoint>();
+
+		for (PointDto pointDto : trailDto.getPoints()) {
+
+			TrailPoint tp = new TrailPoint();
+			tp.setDescription(pointDto.getPointDescription());
+			tp.setTrail(trail);
+			tp.setEndTime(pointDto.getEndTime());
+			tp.setStartTime(pointDto.getStartTime());
+			
+			
+			MainPoint mainPoint = null;
+			if (pointDto.getMainPointId() != null) {
+				mainPoint = (MainPoint) session.load(MainPoint.class, pointDto.getMainPointId());
+			} else {
+				// tworzenie nowego main pointa
+				mainPoint = new MainPoint();
+				mainPoint.setDescription(pointDto.getDescription());
+				mainPoint.setPoiReference(pointDto.getPoiRef());
+				mainPoint.setPoint(new MCoordinate(pointDto.getLatitude(), pointDto.getLongitude()));
+				mainPoint.setName(pointDto.getName());
+
+			}
+			tp.setPoint(mainPoint);
+			
+			points.add(tp);
+
+		}
+		trail.setPoints(points);
+	//	userDao.update(u, trail);
+		
+		
+		
+		u.getUserTrails().add(trail);
+		session.saveOrUpdate(u);
+		
+		
 		session.getTransaction().commit();
 		session.close();
-		return trail;
+		trailDto.setId(trail.getId());
+		
+		return trailDto;
 	}
 
 	@Override
