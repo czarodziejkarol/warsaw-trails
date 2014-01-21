@@ -49,5 +49,7 @@
     <string name="plist">Lista punktów na szlaku:</string>
     <string name="type">Typ szlaku:</string>
     <string name="time">Czas przebycia szlaku:</string>
+    <string name="next_point"></string>
+    <string name="next">Odległość do najbliższego punktu</string>
 
 </resources>
