@@ -17,6 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.carlncarl.spdb.android.dto.TrailDto;
 import com.carlncarl.spdb.android.service.TrailsService;
@@ -25,7 +28,13 @@ public class TrailActivity extends Activity {
 
 	private int position;
 	private TrailDto trail;
-
+	
+	private LinearLayout loadingLayout;
+	private LinearLayout trailListLayout;
+	private TextView trailName;
+	private TextView trailDesc;
+	private ListView trailList;
+	
 	private TrailsService mTrailsService;
 
 	private ServiceConnection connection = new ServiceConnection() {
@@ -70,6 +79,11 @@ public class TrailActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		doBindService();
 		setContentView(R.layout.activity_trail);
+		loadingLayout = (LinearLayout) findViewById(R.id.trail_desc_load);
+		trailListLayout = (LinearLayout) findViewById(R.id.trail_desc_list);
+		trailName = (TextView) findViewById(R.id.trail_name) ;
+		trailDesc = (TextView) findViewById(R.id.trail_desc);
+		trailList = (ListView) findViewById(R.id.trail_list);
 
 		// Show the Up button in the action bar.
 		setupActionBar();
