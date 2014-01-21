@@ -10,6 +10,40 @@
         android:orientation="vertical" >
 
            <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" >
+
+               <ImageView
+                   android:id="@+id/image_angle"
+                   android:visibility="gone"
+                   android:layout_width="48dp"
+                   android:layout_height="48dp"
+                   android:src="@drawable/arrow" />
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:padding="5dp"
+                   android:orientation="vertical" >
+
+                   <TextView
+                       android:id="@+id/textView2"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:gravity="center"
+                       android:text="@string/next" />
+
+                   <TextView
+                       android:id="@+id/text_distance"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:gravity="center" />
+
+               </LinearLayout>
+
+           </LinearLayout>
+
+           <LinearLayout
                android:id="@+id/point_rate_lay"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"

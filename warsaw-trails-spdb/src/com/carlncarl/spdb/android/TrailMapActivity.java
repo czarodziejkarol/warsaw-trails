@@ -11,7 +11,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,8 +28,13 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.carlncarl.spdb.android.dto.CoordinateDto;
 import com.carlncarl.spdb.android.dto.PointDto;
@@ -54,9 +62,14 @@ public class TrailMapActivity extends Activity implements
 	private EditText textComment;
 	private Button buttonRate;
 	private PointDto selectedPoint;
+	private TextView textDistance;
+	private ImageView imageArrow;
+
 	GoogleMap map;
 	Integer visiblePoint = null;
 	boolean zoomed = false;
+	private PointDto currentPoint;
+	private int pointIndex = 0;
 	private ServiceConnection connection = new ServiceConnection() {
 
 		@Override
@@ -86,6 +99,7 @@ public class TrailMapActivity extends Activity implements
 		for (CoordinateDto coor : trail.getPath()) {
 			polyline.add(new LatLng(coor.getLatitude(), coor.getLongitude()));
 		}
+		currentPoint = trail.getPoints().get(0);
 		map.addPolyline(polyline);
 		markers = new ArrayList<MarkerOptions>();
 		for (int i = 0; i < trail.getPoints().size(); i++) {
@@ -127,6 +141,8 @@ public class TrailMapActivity extends Activity implements
 		ratingBar = (RatingBar) findViewById(R.id.point_rate);
 		rateLayout = (LinearLayout) findViewById(R.id.point_rate_lay);
 		textComment = (EditText) findViewById(R.id.edit_text_comment);
+		imageArrow = (ImageView) findViewById(R.id.image_angle);
+		textDistance = (TextView) findViewById(R.id.text_distance);
 
 		buttonRate = (Button) findViewById(R.id.button_rate_point);
 		buttonRate.setOnClickListener(new OnClickListener() {
@@ -162,27 +178,28 @@ public class TrailMapActivity extends Activity implements
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 	}
-	
+
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent event) {
-	View view = getCurrentFocus();
-	boolean ret = super.dispatchTouchEvent(event);
+		View view = getCurrentFocus();
+		boolean ret = super.dispatchTouchEvent(event);
 
-	if (view instanceof EditText) {
-	    View w = getCurrentFocus();
-	    int scrcoords[] = new int[2];
-	    w.getLocationOnScreen(scrcoords);
-	    float x = event.getRawX() + w.getLeft() - scrcoords[0];
-	    float y = event.getRawY() + w.getTop() - scrcoords[1];
+		if (view instanceof EditText) {
+			View w = getCurrentFocus();
+			int scrcoords[] = new int[2];
+			w.getLocationOnScreen(scrcoords);
+			float x = event.getRawX() + w.getLeft() - scrcoords[0];
+			float y = event.getRawY() + w.getTop() - scrcoords[1];
 
-	    if (event.getAction() == MotionEvent.ACTION_UP 
-	&& (x < w.getLeft() || x >= w.getRight() 
-	|| y < w.getTop() || y > w.getBottom()) ) { 
-	        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-	        imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
-	    }
-	}
-	return ret;
+			if (event.getAction() == MotionEvent.ACTION_UP
+					&& (x < w.getLeft() || x >= w.getRight() || y < w.getTop() || y > w
+							.getBottom())) {
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(getWindow().getCurrentFocus()
+						.getWindowToken(), 0);
+			}
+		}
+		return ret;
 	}
 
 	@Override
@@ -264,7 +281,9 @@ public class TrailMapActivity extends Activity implements
 
 	@Override
 	public void onMyLocationChange(Location location) {
-
+		if (location == null) {
+			return;
+		}
 		LatLng latLng = new LatLng(location.getLatitude(),
 				location.getLongitude());
 
@@ -274,6 +293,37 @@ public class TrailMapActivity extends Activity implements
 		} else {
 			map.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 		}
+
+		double distance = TrailMapActivity.distFrom(location.getLatitude(),
+				location.getLongitude(), currentPoint.getLatitude(),
+				currentPoint.getLongitude());
+		if (distance < 10.0) {
+
+			pointIndex++;
+			if (pointIndex < trail.getPoints().size()) {
+				currentPoint = trail.getPoints().get(pointIndex);
+			} else {
+				Toast.makeText(this, "Dziêkujemy za wspólnie sêdzony czas",
+						Toast.LENGTH_LONG).show();
+				textDistance.setText("To ju¿ koniec");
+				map.setOnMyLocationChangeListener(null);
+			}
+		}
+		
+//		Matrix matrix=new Matrix();
+//		Bitmap bmap = BitmapFactory.decodeResource(getResources(), R.drawable.arrow);
+//		matrix.postRotate(getAngle(location.getLatitude(),
+//				location.getLongitude(), currentPoint.getLatitude(),
+//				currentPoint.getLongitude()));
+//		Bitmap newBitmap = Bitmap.createBitmap(bmap, 0, 0,
+//				bmap.getHeight(), bmap.getWidth(), matrix, true);
+//		
+//	//	imageArrow.setScaleType(ScaleType.MATRIX);   //required
+//		imageArrow.setImageBitmap(newBitmap);
+//		
+		//imageArrow.setImageMatrix(matrix);
+		textDistance.setText((int)distance + " metrów");
+
 	}
 
 	@Override
@@ -300,6 +350,33 @@ public class TrailMapActivity extends Activity implements
 			}
 		}
 		return false;
+	}
+
+	public static double distFrom(double lat1, double lng1, double lat2,
+			double lng2) {
+		double earthRadius = 6371000;
+		double dLat = Math.toRadians(lat2 - lat1);
+		double dLng = Math.toRadians(lng2 - lng1);
+		double sindLat = Math.sin(dLat / 2);
+		double sindLng = Math.sin(dLng / 2);
+		double a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
+				* Math.cos(Math.toRadians(lat1))
+				* Math.cos(Math.toRadians(lat2));
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		double dist = earthRadius * c;
+
+		return dist;
+	}
+
+	public static float getAngle(double lat1, double lng1, double lat2,
+			double lng2) {
+		double angle = 0;
+		double deltaY = lng2 - lng1;
+		double deltaX = lat2 - lat1;
+
+		angle = Math.atan2(deltaY, deltaX) * 180.0 / Math.PI;
+
+		return (float) angle;
 	}
 
 }
