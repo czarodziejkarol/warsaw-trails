@@ -2,25 +2,30 @@ package com.carlncarl.spdb.android.dto;
 
 import java.io.Serializable;
 
-public class TrailRateDto implements Serializable{
+public class TrailRateDto implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4468931612939293518L;
 
-	
 	private Long id;
 	private Long userId;
 	private String user;
 	private Long trailId;
 	private Integer rate;
 	private String comment;
-	
+
 	public TrailRateDto() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return user + " skomentowa³ (ocena: " + rate + "): " + comment;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -28,8 +33,6 @@ public class TrailRateDto implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-
 
 	public Integer getRate() {
 		return rate;
@@ -70,7 +73,5 @@ public class TrailRateDto implements Serializable{
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-
-
 
 }

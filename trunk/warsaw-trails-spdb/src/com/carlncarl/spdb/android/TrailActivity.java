@@ -1,5 +1,7 @@
 package com.carlncarl.spdb.android;
 
+import java.util.ArrayList;
+
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -28,6 +30,8 @@ import android.widget.TextView;
 
 import com.carlncarl.spdb.android.dto.PointDto;
 import com.carlncarl.spdb.android.dto.TrailDto;
+import com.carlncarl.spdb.android.dto.TrailRateDto;
+import com.carlncarl.spdb.android.dto.UserDto;
 import com.carlncarl.spdb.android.service.TrailsService;
 
 public class TrailActivity extends Activity {
@@ -45,6 +49,7 @@ public class TrailActivity extends Activity {
 	private ListView trailComentsList;
 	private RatingBar trailRating;
 	private TrailsService mTrailsService;
+	private Button buttonRate;
 
 	private ServiceConnection connection = new ServiceConnection() {
 
@@ -86,7 +91,7 @@ public class TrailActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.activity_trail);
 		loadingLayout = (LinearLayout) findViewById(R.id.trail_desc_load);
 		trailListLayout = (LinearLayout) findViewById(R.id.trail_desc_list);
@@ -97,7 +102,15 @@ public class TrailActivity extends Activity {
 		trailRating = (RatingBar) findViewById(R.id.trail_rate);
 		trailList = (ListView) findViewById(R.id.trail_list);
 		trailComentsList = (ListView) findViewById(R.id.trail_coments_list);
+		buttonRate = (Button) findViewById(R.id.button_rate_trail);
 		// Show the Up button in the action bar.
+		buttonRate.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				rateTrail();
+			}
+		});
 		setupActionBar();
 
 		Intent intent = getIntent();
@@ -115,7 +128,7 @@ public class TrailActivity extends Activity {
 		if (id != null) {
 			loadedFromBack = false;
 			new LoadTrailTask().execute(id);
-			
+
 		}
 		doBindService();
 	}
@@ -220,14 +233,72 @@ public class TrailActivity extends Activity {
 
 		trailList.setAdapter(mAdapter);
 
+		ArrayAdapter<TrailRateDto> adapter = new ArrayAdapter<TrailRateDto>(
+				this, android.R.layout.simple_list_item_1, android.R.id.text1,
+				trail.getTrailRates());
+		trailComentsList.setAdapter(adapter);
+
 		loadingLayout.setVisibility(View.GONE);
 		trailListLayout.setVisibility(View.VISIBLE);
+		trailRateLayout.setVisibility(View.VISIBLE);
 
 	}
 
 	public void exploreMap() {
 		Intent intent = new Intent(this, TrailMapActivity.class);
 		startActivity(intent);
+	}
+
+	protected void rateTrail() {
+		buttonRate.setVisibility(View.INVISIBLE);
+
+		TrailRateDto rate = new TrailRateDto();
+		rate.setUserId(mTrailsService.getUser().getId());
+		rate.setTrailId(this.trail.getId());
+		rate.setRate(Math.round(trailRating.getRating()));
+		rate.setComment(trailComent.getText().toString());
+		new RateTrailTask().execute(rate);
+
+	}
+
+	private class RateTrailTask extends
+			AsyncTask<TrailRateDto, Integer, TrailRateDto> {
+
+		@Override
+		protected TrailRateDto doInBackground(TrailRateDto... arg0) {
+
+			TrailRateDto rate = arg0[0];
+
+			String url = Constants.SERVER_PATH + "/api/vote-trail";
+
+			RestTemplate restTemplate = new RestTemplate(
+					new HttpComponentsClientHttpRequestFactory());
+			restTemplate.getMessageConverters().add(
+					new MappingJacksonHttpMessageConverter());
+
+			rate = restTemplate.postForObject(url, rate, TrailRateDto.class);
+
+			return rate;
+		}
+
+		@Override
+		protected void onPostExecute(TrailRateDto result) {
+			super.onPostExecute(result);
+
+			if (result != null) {
+				rateSucces(result);
+			}
+
+		}
+	}
+
+	public void rateSucces(TrailRateDto result) {
+		UserDto user = mTrailsService.getUser();
+		if (user.getTrailRates() == null) {
+			user.setTrailRates(new ArrayList<TrailRateDto>());
+		}
+		user.getTrailRates().add(result);
+		buttonRate.setVisibility(View.VISIBLE);
 	}
 
 }

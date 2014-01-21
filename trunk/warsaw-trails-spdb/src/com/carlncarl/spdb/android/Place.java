@@ -13,6 +13,7 @@ public class Place {
     private String vicinity;
     private Double latitude;
     private Double longitude;
+    private String reference;
 
     public String getId() {
         return id;
@@ -84,4 +85,12 @@ public class Place {
     public String toString() {
         return "Place{" + "id=" + id + ", icon=" + icon + ", name=" + name + ", latitude=" + latitude + ", longitude=" + longitude + '}';
     }
+
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
 }
