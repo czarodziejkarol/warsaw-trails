@@ -24,14 +24,15 @@
                        android:id="@+id/point_rate"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       android:max="@integer/max_rate" />
+                       android:max="@integer/max_rate"
+                       android:stepSize="1" />
 
                    <Button
                        android:id="@+id/button_rate_point"
-                       style="?android:attr/buttonStyleSmall"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       android:text="@string/rate" />
+                       android:text="@string/rate" 
+                       android:background="@drawable/btn_green" style="@style/ButtonText"/>
                </LinearLayout>
 
                <EditText

@@ -28,7 +28,6 @@
             android:layout_height="wrap_content"
             android:text="Ładowanie..."
             android:textAppearance="?android:attr/textAppearanceMedium" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -53,9 +52,11 @@
 
         <Button
             android:id="@+id/button_go"
+            style="@style/ButtonText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-             android:text="Szlak na mapie" />
+            android:background="@drawable/btn_green"
+            android:text="@string/follow_trail" />
 
         <ListView
             android:id="@+id/trail_coments_list"
@@ -67,47 +68,46 @@
             android:id="@+id/trail_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-
         </ListView>
-
     </LinearLayout>
 
-	 <LinearLayout
-	     android:id="@+id/trail_rate_lay"
-	     android:layout_width="match_parent"
-	     android:layout_height="wrap_content"
-	     android:gravity="top|center"
-	     android:orientation="vertical"
-	     android:visibility="gone" >
+    <LinearLayout
+        android:id="@+id/trail_rate_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top|center"
+        android:orientation="vertical"
+        android:visibility="gone" >
 
-	     <LinearLayout
-	         android:layout_width="match_parent"
-	         android:layout_height="wrap_content"
-	         android:gravity="center" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
 
-	         <RatingBar
-	             android:id="@+id/trail_rate"
-	             android:layout_width="wrap_content"
-	             android:layout_height="wrap_content"
-	             android:max="@integer/max_rate" />
+            <RatingBar
+                android:id="@+id/trail_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:max="@integer/max_rate"
+                android:stepSize="1" />
 
-	         <Button
-	             android:id="@+id/button_rate_trail"
-	             style="?android:attr/buttonStyleSmall"
-	             android:layout_width="wrap_content"
-	             android:layout_height="wrap_content"
-	             android:text="@string/rate" />
-	     </LinearLayout>
+            <Button
+                android:id="@+id/button_rate_trail"
+                style="@style/ButtonText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_green"
+                android:text="@string/rate" />
+        </LinearLayout>
 
-	     <EditText
-	         android:id="@+id/edit_text_trailcomment"
-	         android:layout_width="match_parent"
-	         android:layout_height="wrap_content"
-	         android:ems="10"
-	         android:hint="@string/add_comment"
-	         android:inputType="textMultiLine" >
+        <EditText
+            android:id="@+id/edit_text_trailcomment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/add_comment"
+            android:inputType="textMultiLine" >
+        </EditText>
+    </LinearLayout>
 
-	         
-	     </EditText>
-	 </LinearLayout>
 </LinearLayout>

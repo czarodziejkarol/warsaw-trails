@@ -88,13 +88,16 @@ public class TrailMapActivity extends Activity implements
 		}
 		map.addPolyline(polyline);
 		markers = new ArrayList<MarkerOptions>();
-		for (PointDto point : trail.getPoints()) {
+		for (int i = 0; i < trail.getPoints().size(); i++) {
+			PointDto point = trail.getPoints().get(i);
 			MarkerOptions marker = new MarkerOptions();
 			marker.title(point.getName());
 			marker.position(new LatLng(point.getLatitude(), point
 					.getLongitude()));
 			marker.visible(true);
 			marker.snippet(point.getDescription());
+			marker.icon(IconChooser.chooseBitmap(i));
+
 			markers.add(marker);
 			map.addMarker(marker);
 		}
@@ -221,10 +224,10 @@ public class TrailMapActivity extends Activity implements
 
 			String url = Constants.SERVER_PATH + "/api/vote-point";
 
-			RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+			RestTemplate restTemplate = new RestTemplate(
+					new HttpComponentsClientHttpRequestFactory());
 			restTemplate.getMessageConverters().add(
 					new MappingJacksonHttpMessageConverter());
-			
 
 			rate = restTemplate.postForObject(url, rate, PointRateDto.class);
 

@@ -166,13 +166,12 @@ public class NewTrailActivity extends Activity implements
 		marker.title(point.getName());
 		marker.visible(true);
 		marker.snippet(point.getDescription());
+		marker.icon(IconChooser.chooseBitmap(markers.size()));
 		trail.getPoints().add(point);
 		map.addMarker(marker);
 		markers.add(marker);
 		
 		cancelAddingPoint();
-		
-		
 	}
 
 	protected void showAddPointLayout() {
@@ -181,7 +180,7 @@ public class NewTrailActivity extends Activity implements
 		nearPoints = new ArrayList<MainPointDto>();
 		this.currentPoint = new PointDto();
 		Location lastLoc = locations.getLast();
-		new LoadNearPointsTask().execute(lastLoc.getLatitude() +"", lastLoc.getLongitude()+"","50");
+		new LoadNearPointsTask().execute(lastLoc.getLatitude() +"", lastLoc.getLongitude()+"","200");
 	}
 
 	protected void endTrail() {
@@ -333,23 +332,36 @@ public class NewTrailActivity extends Activity implements
 			PlacesService service = new PlacesService(
 					"AIzaSyDDQmSFM5YGLpvBFitj1TZwpH9AvPHzhbg");
 			String places;
-			ArrayList<Place> findPlaces = service.findPlaces(28.632808, // 28.632808
-					77.218276, ""); // 77.218276
+			ArrayList<Place> findPlaces = service.findPlaces(Double.valueOf(params[0]), 
+					Double.valueOf(params[1]), "", params[2]);
 
+			
+			ArrayList<MainPointDto> found = new ArrayList<MainPointDto>();
+			
 			for (int i = 0; i < findPlaces.size(); i++) {
-
 				Place placeDetail = findPlaces.get(i);
-				//Log.e(TAG, "places : " + placeDetail.getName());
+				for (MainPointDto mpoint : list) {
+					if(placeDetail.getId().equals(mpoint.getPoiReference())){
+						break;
+					}
+				}
+				MainPointDto mpoint = new MainPointDto();
+				mpoint.setCoordinate(new CoordinateDto(placeDetail.getLatitude(),placeDetail.getLongitude()));
+				mpoint.setName(placeDetail.getName());
+				mpoint.setDescription(placeDetail.getVicinity());
+				mpoint.setPoiReference(placeDetail.getId());
+				found.add(mpoint);
+			}
+			for (MainPointDto mpoint : list) {
+				found.add(mpoint);
+				
+			}
+			MainPointDto[] retList = new MainPointDto[found.size()];
+			for (int i = 0; i < found.size(); i++) {
+				retList[i] = found.get(i);
 			}
 			
-			//przerobienie na        MainPointDto tudu = new MainPointDto();
-			//dutu.setName
-			//dutu.poiRe
-			//
-			// dodajesz do list o ile nie ma jeszcze na liœcie takiego o takim  poiReference
-			
-			
-			return list;
+			return retList;
 		}
 
 		@Override

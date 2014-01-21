@@ -26,9 +26,10 @@ public class PlacesService {
 	}
 
 	public ArrayList<Place> findPlaces(double latitude, double longitude,
-			String placeSpacification) {
+			String placeSpacification, String distance) {
 
-		String urlString = makeUrl(latitude, longitude, placeSpacification);
+		String urlString = makeUrl(latitude, longitude, placeSpacification,
+				distance);
 
 		try {
 			String json = getJSON(urlString);
@@ -56,7 +57,8 @@ public class PlacesService {
 	}
 
 	// https://maps.googleapis.com/maps/api/place/search/json?location=28.632808,77.218276&radius=500&types=atm&sensor=false&key=apikey
-	private String makeUrl(double latitude, double longitude, String place) {
+	private String makeUrl(double latitude, double longitude, String place,
+			String distance) {
 		StringBuilder urlString = new StringBuilder(
 				"https://maps.googleapis.com/maps/api/place/search/json?");
 
@@ -65,7 +67,7 @@ public class PlacesService {
 			urlString.append(Double.toString(latitude));
 			urlString.append(",");
 			urlString.append(Double.toString(longitude));
-			urlString.append("&radius=1000");
+			urlString.append("&radius=" + distance);
 			// urlString.append("&types="+place);
 			urlString.append("&sensor=false&key=" + API_KEY);
 		} else {
@@ -73,7 +75,7 @@ public class PlacesService {
 			urlString.append(Double.toString(latitude));
 			urlString.append(",");
 			urlString.append(Double.toString(longitude));
-			urlString.append("&radius=1000");
+			urlString.append("&radius=" + distance);
 			urlString.append("&types=" + place);
 			urlString.append("&sensor=false&key=" + API_KEY);
 		}
@@ -97,7 +99,7 @@ public class PlacesService {
 				content.append(line + "\n");
 			}
 			bufferedReader.close();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return content.toString();

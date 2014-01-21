@@ -2,7 +2,7 @@ package com.carlncarl.spdb.android.dto;
 
 import java.io.Serializable;
 
-public class PointRateDto implements Serializable{
+public class PointRateDto implements Serializable {
 
 	/**
 	 * 
@@ -15,9 +15,15 @@ public class PointRateDto implements Serializable{
 	private Long mainPointId;
 	private Integer rate;
 	private String comment;
-	
+
 	public PointRateDto() {
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return user + " skomentowa³ (ocena: " + rate + "): " + comment;
 	}
 
 	public Long getId() {
@@ -67,5 +73,5 @@ public class PointRateDto implements Serializable{
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-	
+
 }

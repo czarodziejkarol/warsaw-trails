@@ -16,17 +16,18 @@
 
             <Button
                 android:id="@+id/button_new_point"
-                style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/new_point" />
+                android:text="@string/new_point"
+                android:background="@drawable/btn_green" 
+                style="@style/ButtonText" />
 
             <Button
                 android:id="@+id/button_end_trail"
-                style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/end_trail" />
+                android:text="@string/end_trail"
+                android:background="@drawable/btn_green" style="@style/ButtonText" />
 
         </LinearLayout>
 
@@ -43,17 +44,17 @@
 
                 <Button
                     android:id="@+id/button_add_point"
-                    style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/add" />
+                    android:text="@string/add" 
+                    android:background="@drawable/btn_green" style="@style/ButtonText"/>
 
                 <Button
                     android:id="@+id/button_cancel"
-                    style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/cancel" />
+                    android:text="@string/cancel" 
+                    android:background="@drawable/btn_green" style="@style/ButtonText"/>
 
             </LinearLayout>
 
