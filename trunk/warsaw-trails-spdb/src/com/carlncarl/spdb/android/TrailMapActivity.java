@@ -3,7 +3,6 @@ package com.carlncarl.spdb.android;
 import java.util.ArrayList;
 
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,8 +19,10 @@ import android.os.IBinder;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -36,13 +37,11 @@ import com.carlncarl.spdb.android.service.TrailsService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 public class TrailMapActivity extends Activity implements
@@ -159,6 +158,28 @@ public class TrailMapActivity extends Activity implements
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
+	}
+	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent event) {
+	View view = getCurrentFocus();
+	boolean ret = super.dispatchTouchEvent(event);
+
+	if (view instanceof EditText) {
+	    View w = getCurrentFocus();
+	    int scrcoords[] = new int[2];
+	    w.getLocationOnScreen(scrcoords);
+	    float x = event.getRawX() + w.getLeft() - scrcoords[0];
+	    float y = event.getRawY() + w.getTop() - scrcoords[1];
+
+	    if (event.getAction() == MotionEvent.ACTION_UP 
+	&& (x < w.getLeft() || x >= w.getRight() 
+	|| y < w.getTop() || y > w.getBottom()) ) { 
+	        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+	        imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
+	    }
+	}
+	return ret;
 	}
 
 	@Override
