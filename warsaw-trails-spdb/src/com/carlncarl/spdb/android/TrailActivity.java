@@ -15,12 +15,18 @@ import android.os.IBinder;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.carlncarl.spdb.android.dto.PointDto;
 import com.carlncarl.spdb.android.dto.TrailDto;
 import com.carlncarl.spdb.android.service.TrailsService;
 
@@ -28,13 +34,16 @@ public class TrailActivity extends Activity {
 
 	private int position;
 	private TrailDto trail;
-	
+
 	private LinearLayout loadingLayout;
 	private LinearLayout trailListLayout;
+	private LinearLayout trailRateLayout;
 	private TextView trailName;
 	private TextView trailDesc;
+	private TextView trailComent;
 	private ListView trailList;
-	
+	private ListView trailComentsList;
+	private RatingBar trailRating;
 	private TrailsService mTrailsService;
 
 	private ServiceConnection connection = new ServiceConnection() {
@@ -72,19 +81,22 @@ public class TrailActivity extends Activity {
 		}
 	}
 
-	private boolean loadedFromBack = false;
+	private boolean loadedFromBack = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		doBindService();
+		
 		setContentView(R.layout.activity_trail);
 		loadingLayout = (LinearLayout) findViewById(R.id.trail_desc_load);
 		trailListLayout = (LinearLayout) findViewById(R.id.trail_desc_list);
-		trailName = (TextView) findViewById(R.id.trail_name) ;
+		trailRateLayout = (LinearLayout) findViewById(R.id.trail_rate_lay);
+		trailName = (TextView) findViewById(R.id.trail_name);
 		trailDesc = (TextView) findViewById(R.id.trail_desc);
+		trailComent = (TextView) findViewById(R.id.edit_text_trailcomment);
+		trailRating = (RatingBar) findViewById(R.id.trail_rate);
 		trailList = (ListView) findViewById(R.id.trail_list);
-
+		trailComentsList = (ListView) findViewById(R.id.trail_coments_list);
 		// Show the Up button in the action bar.
 		setupActionBar();
 
@@ -101,9 +113,11 @@ public class TrailActivity extends Activity {
 			}
 		});
 		if (id != null) {
-			loadedFromBack = true;
+			loadedFromBack = false;
 			new LoadTrailTask().execute(id);
+			
 		}
+		doBindService();
 	}
 
 	/**
@@ -113,6 +127,29 @@ public class TrailActivity extends Activity {
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
+	}
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent event) {
+		View view = getCurrentFocus();
+		boolean ret = super.dispatchTouchEvent(event);
+
+		if (view instanceof EditText) {
+			View w = getCurrentFocus();
+			int scrcoords[] = new int[2];
+			w.getLocationOnScreen(scrcoords);
+			float x = event.getRawX() + w.getLeft() - scrcoords[0];
+			float y = event.getRawY() + w.getTop() - scrcoords[1];
+
+			if (event.getAction() == MotionEvent.ACTION_UP
+					&& (x < w.getLeft() || x >= w.getRight() || y < w.getTop() || y > w
+							.getBottom())) {
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(getWindow().getCurrentFocus()
+						.getWindowToken(), 0);
+			}
+		}
+		return ret;
 	}
 
 	@Override
@@ -173,7 +210,18 @@ public class TrailActivity extends Activity {
 	}
 
 	private void fillItems() {
-		// TODO Auto-generated method stub
+
+		trailName.setText(trail.getName());
+		trailDesc.setText(trail.getDescription());
+
+		ArrayAdapter<PointDto> mAdapter = new ArrayAdapter<PointDto>(this,
+				android.R.layout.simple_list_item_1, android.R.id.text1,
+				trail.getPoints());
+
+		trailList.setAdapter(mAdapter);
+
+		loadingLayout.setVisibility(View.GONE);
+		trailListLayout.setVisibility(View.VISIBLE);
 
 	}
 
