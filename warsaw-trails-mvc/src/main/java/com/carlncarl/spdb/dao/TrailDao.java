@@ -10,7 +10,7 @@ import com.carlncarl.spdb.model.dto.TrailDto;
 public interface TrailDao {
 	
 	public List<TrailDto> getTrailsByDateAdd();
-	public Trail save(Trail trail) throws WarsawTrailsException;
+	public TrailDto save(TrailDto trail) throws WarsawTrailsException;
 	public boolean delete(Trail trail);
 	public TrailDto getTrailById(Long id);
 	public List<MainPointDto> getNearPoints(double latitude, double longitude,
